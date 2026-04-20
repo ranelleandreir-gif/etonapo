@@ -1,47 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Kasipag Admin Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Kasipag Admin</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="sidebar">
   <h2>Kasipag</h2>
-
-  <a href="#" onclick="showSection('dashboard')">📊 Dashboard</a>
-  <a href="#" onclick="showSection('loans')">💰 Loans</a>
+  <a onclick="show('dash')">📊 Dashboard</a>
+  <a onclick="show('loan')">💰 Loans</a>
 </div>
 
 <div class="main">
 
   <!-- DASHBOARD -->
-  <div id="dashboard" class="section">
-    <h1>Admin Dashboard</h1>
-    <p>Welcome back, Admin 👋</p>
+  <div id="dash">
+    <h1>Dashboard</h1>
 
-    <div class="cards">
-      <div class="card"><h3>Total Loans</h3><p>₱120,000</p></div>
-      <div class="card"><h3>Borrowers</h3><p>48</p></div>
-      <div class="card"><h3>Paid</h3><p>₱8,500</p></div>
-      <div class="card"><h3>Pending</h3><p>12</p></div>
+    <div class="grid">
+      <div class="card"><h3>Total Loans</h3><p id="total">0</p></div>
+      <div class="card"><h3>Borrowers</h3><p id="borrowers">0</p></div>
+      <div class="card"><h3>Groups</h3><p id="groups">0</p></div>
+      <div class="card"><h3>Pending</h3><p id="pending">0</p></div>
     </div>
   </div>
 
   <!-- LOANS -->
-  <div id="loans" class="section hidden">
+  <div id="loan" class="hidden">
 
-    <div class="loan-form">
-      <h2>Add Loan</h2>
+    <h1>Loan System</h1>
 
-      <input type="text" id="leader" placeholder="Team Leader Name">
+    <div class="form">
+      <input id="leader" placeholder="Team Leader">
+      <input id="members" placeholder="Members (comma separated)">
+      <input id="amount" type="number" placeholder="Amount">
 
-      <input type="text" id="members" placeholder="Members (comma separated)">
-
-      <input type="number" id="amount" placeholder="Loan Amount">
-
-      <select id="type" onchange="toggleMembers()">
+      <select id="type" onchange="toggle()">
         <option value="Solo">Solo</option>
         <option value="Group">Group</option>
       </select>
@@ -49,27 +45,23 @@
       <button onclick="addLoan()">Add Loan</button>
     </div>
 
-    <div class="table-box">
-      <h2>Recent Loans</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Borrower</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Borrower</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody id="loanTable"></tbody>
-      </table>
-    </div>
+      <tbody id="table"></tbody>
+    </table>
 
   </div>
 
 </div>
 
-<script src="script.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 </html>

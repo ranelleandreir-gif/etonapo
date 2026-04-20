@@ -1,130 +1,136 @@
-function login() {
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-  let role = document.getElementById("role").value;
-  let msg = document.getElementById("msg");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-  // SIMPLE DEMO LOGIN (for prototype lang)
-  if (username === "admin" && password === "1234" && role === "admin") {
-    window.location.href = "admin.html";
-  }
-  else if (username === "cashier" && password === "1234" && role === "cashier") {
-    window.location.href = "cashier.html";
-  }
-  else if (username === "rider" && password === "1234" && role === "rider") {
-    window.location.href = "rider.html";
-  }
-  else {
-    msg.innerText = "Invalid credentials!";
-    msg.style.color = "red";
-  }
-}
+/* 🔥 FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyBTkf7LjPDlTdRr1N_4xfvzdcjdMBGVKZk",
+  authDomain: "eto-na-5543f.firebaseapp.com",
+  projectId: "eto-na-5543f",
+  storageBucket: "eto-na-5543f.firebasestorage.app",
+  messagingSenderId: "914719267981",
+  appId: "1:914719267981:web:50f6d701115695702516c4"
+};
 
-function checkAccess() {
-  let key = document.getElementById("accessKey").value;
-  let msg = document.getElementById("msg");
+/* INIT FIREBASE */
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  if (key === "kasipagadmin") {
-    // 👉 redirect to login page
-    window.location.href = "admin-login.html";
-  } else {
-    msg.innerText = "Wrong Access Key!";
-    msg.style.color = "red";
-  }
-}
+let loansData = [];
 
-function adminLogin() {
-  let u = document.getElementById("user").value;
-  let p = document.getElementById("pass").value;
+/* =========================
+   NAVIGATION (DASH / LOAN)
+========================= */
+window.show = function(page){
 
-  if (u === "admin" && p === "1234") {
-    window.location.href = "admin.html";
-  } else {
-    alert("Invalid Login");
-  }
-}
+  document.getElementById("dash").classList.add("hidden");
+  document.getElementById("loan").classList.add("hidden");
 
-function addLoan() {
-  let name = document.getElementById("name").value;
-  let amount = document.getElementById("amount").value;
-  let type = document.getElementById("type").value;
+  document.getElementById(page).classList.remove("hidden");
+};
 
-  if (!name || !amount) {
-    alert("Please complete all fields");
-    return;
-  }
+/* =========================
+   SOLO / GROUP TOGGLE
+========================= */
+window.toggle = function(){
 
-  let table = document.getElementById("loanTable");
-
-  let row = table.insertRow();
-
-  row.innerHTML = `
-    <td>${name}</td>
-    <td>₱${amount}</td>
-    <td>${type}</td>
-    <td class="pending">Pending</td>
-  `;
-
-  document.getElementById("name").value = "";
-  document.getElementById("amount").value = "";
-}
-
-function showSection(section) {
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("loans").classList.add("hidden");
-
-  document.getElementById(section).classList.remove("hidden");
-}
-
-function toggleMembers() {
   let type = document.getElementById("type").value;
   let members = document.getElementById("members");
 
-  if (type === "Solo") {
+  if(type === "Solo"){
     members.disabled = true;
     members.value = "";
   } else {
     members.disabled = false;
   }
-}
+};
 
-// default state
-toggleMembers();
+/* =========================
+   ADD LOAN (FIREBASE SAVE)
+========================= */
+window.addLoan = async function(){
 
-function addLoan() {
   let leader = document.getElementById("leader").value;
   let members = document.getElementById("members").value;
   let amount = document.getElementById("amount").value;
   let type = document.getElementById("type").value;
 
-  if (!leader || !amount) {
+  if(!leader || !amount){
     alert("Please fill required fields");
     return;
   }
 
-  let table = document.getElementById("loanTable");
-  let row = table.insertRow();
+  try{
+    await addDoc(collection(db,"loans"),{
+      leader: leader,
+      members: members,
+      amount: amount,
+      type: type,
+      status: "Pending",
+      createdAt: new Date()
+    });
 
-  if (type === "Solo") {
-    row.innerHTML = `
-      <td>${leader}</td>
-      <td>₱${amount}</td>
-      <td>Solo</td>
-      <td class="pending">Pending</td>
-    `;
-  } else {
-    row.innerHTML = `
-      <td>
-        <b>${leader}</b><br>
-        <small>Members: ${members}</small>
-      </td>
-      <td>₱${amount}</td>
-      <td>Group</td>
-      <td class="pending">Pending</td>
-    `;
+    alert("Loan Added Successfully ✅");
+
+    // clear form
+    document.getElementById("leader").value = "";
+    document.getElementById("members").value = "";
+    document.getElementById("amount").value = "";
+
+    loadLoans();
+
+  } catch(error){
+    console.error(error);
+    alert("Error saving loan");
   }
+};
 
-  document.getElementById("leader").value = "";
-  document.getElementById("members").value = "";
-  document.getElementById("amount").value = "";
+/* =========================
+   LOAD LOANS (FIREBASE READ)
+========================= */
+async function loadLoans(){
+
+  let table = document.getElementById("table");
+  table.innerHTML = "";
+
+  const snap = await getDocs(collection(db,"loans"));
+
+  let total = 0;
+  let borrowers = 0;
+  let groups = 0;
+
+  snap.forEach(doc => {
+
+    let l = doc.data();
+
+    total += Number(l.amount);
+    borrowers++;
+
+    if(l.type === "Group"){
+      groups++;
+    }
+
+    table.innerHTML += `
+      <tr>
+        <td>
+          <b>${l.leader}</b><br>
+          <small>${l.members || "-"}</small>
+        </td>
+        <td>₱${l.amount}</td>
+        <td>${l.type}</td>
+        <td>${l.status}</td>
+      </tr>
+    `;
+  });
+
+  // DASHBOARD STATS
+  document.getElementById("total").innerText = "₱" + total;
+  document.getElementById("borrowers").innerText = borrowers;
+  document.getElementById("groups").innerText = groups;
+  document.getElementById("pending").innerText = borrowers;
 }
+
+/* =========================
+   INIT LOAD
+========================= */
+loadLoans();

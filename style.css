@@ -405,3 +405,159 @@ th, td {
 small {
   color: #94a3b8;
 }
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+.sidebar{
+  width:220px;
+  height:100vh;
+  background:#111827;
+  position:fixed;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  margin:15px 0;
+  cursor:pointer;
+  color:#cbd5e1;
+}
+
+.main{
+  margin-left:240px;
+  padding:20px;
+}
+
+.hidden{display:none;}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.card{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.form{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:#22c55e;
+  border:none;
+  color:white;
+  border-radius:8px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  border:1px solid #334155;
+  padding:10px;
+}
+
+small{color:#94a3b8;}
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+.sidebar{
+  width:220px;
+  height:100vh;
+  background:#111827;
+  position:fixed;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  margin:15px 0;
+  cursor:pointer;
+  color:#cbd5e1;
+}
+
+.main{
+  margin-left:240px;
+  padding:20px;
+}
+
+.hidden{display:none;}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.card{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.form{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:#22c55e;
+  border:none;
+  color:white;
+  border-radius:8px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  border:1px solid #334155;
+  padding:10px;
+}
+
+small{color:#94a3b8;}
