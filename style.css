@@ -105,3 +105,34 @@ footer {
   background: #111827;
   margin-top: 30px;
 }
+
+.login-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.login-box {
+  background: #111827;
+  padding: 30px;
+  border-radius: 15px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+.login-box input,
+.login-box select {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.login-box button {
+  width: 100%;
+  margin-top: 10px;
+}

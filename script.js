@@ -1,0 +1,21 @@
+function login() {
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
+  let role = document.getElementById("role").value;
+  let msg = document.getElementById("msg");
+
+  // SIMPLE DEMO LOGIN (for prototype lang)
+  if (username === "admin" && password === "1234" && role === "admin") {
+    window.location.href = "admin.html";
+  }
+  else if (username === "cashier" && password === "1234" && role === "cashier") {
+    window.location.href = "cashier.html";
+  }
+  else if (username === "rider" && password === "1234" && role === "rider") {
+    window.location.href = "rider.html";
+  }
+  else {
+    msg.innerText = "Invalid credentials!";
+    msg.style.color = "red";
+  }
+}
