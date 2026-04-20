@@ -173,5 +173,5 @@ footer {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }

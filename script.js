@@ -24,10 +24,10 @@ function checkAccess() {
   let key = document.getElementById("accessKey").value;
   let msg = document.getElementById("msg");
 
-  // ADMIN SECRET KEY
+  // SECRET ADMIN KEY
   if (key === "kasipagadmin") {
-    document.getElementById("gateBox").classList.add("hidden");
-    document.getElementById("loginBox").classList.remove("hidden");
+    document.getElementById("gateBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "block";
   } else {
     msg.innerText = "Wrong Access Key!";
     msg.style.color = "red";
