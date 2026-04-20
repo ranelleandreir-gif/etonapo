@@ -19,3 +19,28 @@ function login() {
     msg.style.color = "red";
   }
 }
+
+function checkAccess() {
+  let key = document.getElementById("accessKey").value;
+  let msg = document.getElementById("msg");
+
+  // ADMIN SECRET KEY
+  if (key === "kasipagadmin") {
+    document.getElementById("gateBox").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+  } else {
+    msg.innerText = "Wrong Access Key!";
+    msg.style.color = "red";
+  }
+}
+
+function adminLogin() {
+  let u = document.getElementById("user").value;
+  let p = document.getElementById("pass").value;
+
+  if (u === "admin" && p === "1234") {
+    window.location.href = "admin.html";
+  } else {
+    alert("Invalid Admin Login");
+  }
+}

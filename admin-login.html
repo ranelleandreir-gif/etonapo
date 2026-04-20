@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Access</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+  <!-- GATE SECTION -->
+  <div id="gateBox" class="login-box">
+    <img src="kasipag.png" class="logo">
+    <h2>Admin Access Key</h2>
+
+    <input type="password" id="accessKey" placeholder="Enter Access Key">
+    <button onclick="checkAccess()">Continue</button>
+
+    <p id="msg"></p>
+  </div>
+
+  <!-- LOGIN FORM (HIDDEN FIRST) -->
+  <div id="loginBox" class="login-box hidden">
+    <img src="kasipag.png" class="logo">
+    <h2>Admin Login</h2>
+
+    <input type="text" id="user" placeholder="Username">
+    <input type="password" id="pass" placeholder="Password">
+
+    <button onclick="adminLogin()">Login</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
