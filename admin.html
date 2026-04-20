@@ -2,22 +2,188 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kasipag Admin</title>
-<link rel="stylesheet" href="style.css">
+<title>Kasipag Admin Panel</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  display:flex;
+  background:#0f172a;
+  color:white;
+}
+
+/* 🔥 SIDEBAR */
+.sidebar{
+  width:240px;
+  height:100vh;
+  background:#020617;
+  padding:20px;
+  border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar h2{
+  margin-bottom:30px;
+  color:#06b6d4;
+}
+
+.sidebar a{
+  display:block;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:10px;
+  cursor:pointer;
+  opacity:0.8;
+}
+
+.sidebar a:hover{
+  background:#06b6d4;
+  opacity:1;
+}
+
+/* 🔥 MAIN */
+.main{
+  flex:1;
+  padding:30px;
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:30px;
+}
+
+.topbar h1{
+  font-size:22px;
+}
+
+.badge{
+  background:#06b6d4;
+  padding:8px 15px;
+  border-radius:20px;
+}
+
+/* GRID CARDS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:#1e293b;
+  padding:20px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,0.1);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.card h3{
+  font-size:14px;
+  opacity:0.7;
+}
+
+.card p{
+  font-size:28px;
+  font-weight:bold;
+}
+
+/* FORM */
+.form{
+  margin:20px 0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.form input,
+.form select{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  background:#020617;
+  color:white;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.form button{
+  padding:10px 20px;
+  background:#06b6d4;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+  background:#020617;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+th, td{
+  padding:12px;
+  text-align:left;
+}
+
+th{
+  background:#1e293b;
+}
+
+tr:nth-child(even){
+  background:#0f172a;
+}
+
+.status{
+  padding:5px 10px;
+  border-radius:10px;
+  font-size:12px;
+}
+
+.pending{
+  background:#f59e0b;
+}
+
+.approved{
+  background:#22c55e;
+}
+
+.hidden{
+  display:none;
+}
+</style>
 </head>
+
 <body>
 
 <div class="sidebar">
   <h2>Kasipag</h2>
   <a onclick="show('dash')">📊 Dashboard</a>
-  <a onclick="show('loan')">💰 Loans</a>
+  <a onclick="show('loan')">💰 Loan System</a>
 </div>
 
 <div class="main">
 
   <!-- DASHBOARD -->
   <div id="dash">
-    <h1>Dashboard</h1>
+    <div class="topbar">
+      <h1>Admin Dashboard</h1>
+      <div class="badge">Online</div>
+    </div>
 
     <div class="grid">
       <div class="card"><h3>Total Loans</h3><p id="total">0</p></div>
@@ -30,14 +196,16 @@
   <!-- LOANS -->
   <div id="loan" class="hidden">
 
-    <h1>Loan System</h1>
+    <div class="topbar">
+      <h1>Loan Management</h1>
+    </div>
 
     <div class="form">
       <input id="leader" placeholder="Team Leader">
       <input id="members" placeholder="Members (comma separated)">
       <input id="amount" type="number" placeholder="Amount">
 
-      <select id="type" onchange="toggle()">
+      <select id="type">
         <option value="Solo">Solo</option>
         <option value="Group">Group</option>
       </select>
@@ -62,6 +230,30 @@
 
 </div>
 
-<script type="module" src="script.js"></script>
+<script>
+function show(id){
+  document.getElementById("dash").classList.add("hidden");
+  document.getElementById("loan").classList.add("hidden");
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function addLoan(){
+  let leader = document.getElementById("leader").value;
+  let amount = document.getElementById("amount").value;
+  let type = document.getElementById("type").value;
+
+  let row = `
+    <tr>
+      <td>${leader}</td>
+      <td>₱${amount}</td>
+      <td>${type}</td>
+      <td><span class="status pending">Pending</span></td>
+    </tr>
+  `;
+
+  document.getElementById("table").innerHTML += row;
+}
+</script>
+
 </body>
 </html>
