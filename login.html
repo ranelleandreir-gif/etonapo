@@ -7,28 +7,17 @@
 </head>
 <body class="login-body">
 
-  <div class="login-box">
+  <div class="selector-box">
 
     <img src="kasipag.png" class="logo">
 
-    <h2>Kasipag Login</h2>
+    <h2>Select Your Role</h2>
 
-    <input type="text" id="username" placeholder="Username">
-
-    <input type="password" id="password" placeholder="Password">
-
-    <select id="role">
-      <option value="admin">Admin</option>
-      <option value="cashier">Cashier</option>
-      <option value="rider">Rider</option>
-    </select>
-
-    <button onclick="login()">Login</button>
-
-    <p id="msg"></p>
+    <a href="admin-login.html" class="role-btn admin">Admin</a>
+    <a href="cashier-login.html" class="role-btn cashier">Cashier</a>
+    <a href="rider-login.html" class="role-btn rider">Rider</a>
 
   </div>
 
-  <script src="script.js"></script>
 </body>
 </html>

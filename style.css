@@ -136,3 +136,38 @@ footer {
   width: 100%;
   margin-top: 10px;
 }
+
+.selector-box {
+  background:#111827;
+  padding:30px;
+  border-radius:15px;
+  text-align:center;
+  width:300px;
+  box-shadow:0 0 20px rgba(34,197,94,0.3);
+}
+
+.role-btn {
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  border-radius:10px;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.admin {
+  background:#ef4444;
+}
+
+.cashier {
+  background:#3b82f6;
+}
+
+.rider {
+  background:#22c55e;
+}
+
+.role-btn:hover {
+  opacity:0.8;
+}
