@@ -322,7 +322,7 @@ async function login(user, pass, accessKey) {
       found = true;
       alert("Admin Login Success ✅");
 
-      window.location.href = "admin.html";
+      window.location.href = "admin-login.html";
     }
 
     // CASHIER / RIDER LOGIN
@@ -334,7 +334,7 @@ async function login(user, pass, accessKey) {
       found = true;
       alert(data.role + " Login Success ✅");
 
-      window.location.href = data.role + ".html";
+      window.location.href = data.role + "admin.html";
     }
   });
 

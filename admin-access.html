@@ -19,5 +19,25 @@
   </div>
 
   <script src="script.js"></script>
+
+  <script>
+function checkAccess(){
+  let key = document.getElementById("accessKey").value;
+
+  if(key === "kasipag123"){
+    window.location.href = "admin-login.html"; // ito ang pupuntahan
+  } else {
+    document.getElementById("msg").innerText = "Wrong Access Key!";
+  }
+}
+</script>
+
+<script>
+document.getElementById("accessKey").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    checkAccess();
+  }
+});
+</script>
 </body>
 </html>

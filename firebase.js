@@ -1,18 +1,15 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// firebase.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// YOUR FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "AIzaSyBTkf7LjPDlTdRr1N_4xfvzdcjdMBGVKZk",
-  authDomain: "eto-na-5543f.firebaseapp.com",
-  projectId: "eto-na-5543f",
-  storageBucket: "eto-na-5543f.firebasestorage.app",
-  messagingSenderId: "914719267981",
-  appId: "1:914719267981:web:50f6d701115695702516c4",
-  measurementId: "G-96WDVXR9TD"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
 };
 
-// INIT FIREBASE
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
