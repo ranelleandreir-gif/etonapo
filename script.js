@@ -209,3 +209,86 @@ async function loadLoans() {
   document.getElementById("groups").innerText = groups;
   document.getElementById("pending").innerText = borrowers;
 }
+
+window.show = function(page){
+  document.getElementById("dash").style.display = "none";
+  document.getElementById("loan").style.display = "none";
+
+  document.getElementById(page).style.display = "block";
+};
+
+function adminLogin() {
+  let user = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+
+  // SIMPLE LOGIN (FOR DEMO ONLY)
+  if (user === "admin" && pass === "1234") {
+    alert("Login Successful ✅");
+
+    // redirect to admin panel
+    window.location.href = "admin.html";
+
+  } else {
+    alert("Wrong username or password ❌");
+  }
+}
+
+function checkAccess() {
+  let key = document.getElementById("accessKey").value;
+  let msg = document.getElementById("msg");
+
+  // ACCESS KEY (pwede mo palitan)
+  if (key === "kasipag123") {
+    msg.style.color = "lightgreen";
+    msg.innerText = "Access Granted ✅";
+
+    // go to login page
+    setTimeout(() => {
+      window.location.href = "login.html"; 
+      // or admin.html depende sa flow mo
+    }, 1000);
+
+  } else {
+    msg.style.color = "red";
+    msg.innerText = "Wrong Access Key ❌";
+  }
+}
+
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const db = getFirestore(app);
+
+async function login(user, pass) {
+
+  const snap = await getDocs(collection(db, "accounts"));
+
+  let found = false;
+
+  snap.forEach(doc => {
+    let data = doc.data();
+
+    if(data.username === user && data.password === pass){
+      found = true;
+
+      alert("Login Success: " + data.role);
+
+      // redirect based on role
+      if(data.role === "admin"){
+        window.location.href = "admin.html";
+      }
+
+      if(data.role === "cashier"){
+        window.location.href = "cashier.html";
+      }
+
+      if(data.role === "rider"){
+        window.location.href = "rider.html";
+      }
+    }
+  });
+
+  if(!found){
+    alert("Invalid login");
+  }
+}
