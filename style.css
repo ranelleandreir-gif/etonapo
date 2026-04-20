@@ -1,37 +1,62 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: #0f172a;
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
 }
 
-.container {
-  padding: 30px;
+/* NAVBAR */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #111827;
+  position: sticky;
+  top: 0;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-area img {
+  width: 40px;
+  border-radius: 8px;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #cbd5e1;
+}
+
+nav a:hover {
+  color: #22c55e;
+}
+
+/* HERO */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px;
+}
+
+.hero-text {
   max-width: 500px;
 }
 
-.logo {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
-}
-
-h1 {
+.hero-text h1 {
+  font-size: 40px;
   color: #22c55e;
-  margin-bottom: 10px;
 }
 
-p {
+.hero-text p {
   color: #cbd5e1;
-  margin-bottom: 20px;
+  margin: 15px 0;
 }
 
 button {
@@ -40,10 +65,43 @@ button {
   padding: 12px 20px;
   border-radius: 10px;
   color: white;
-  font-size: 16px;
   cursor: pointer;
 }
 
 button:hover {
   background: #16a34a;
+}
+
+.hero-img img {
+  width: 250px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+}
+
+/* FEATURES */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 15px;
+  width: 200px;
+  text-align: center;
+}
+
+.card h3 {
+  color: #22c55e;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #111827;
+  margin-top: 30px;
 }
