@@ -291,4 +291,112 @@ async function login(user, pass) {
   if(!found){
     alert("Invalid login");
   }
+}   
+
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const db = getFirestore(app);
+
+async function login(user, pass, accessKey) {
+
+  const snap = await getDocs(collection(db, "accounts"));
+
+  let found = false;
+
+  snap.forEach(doc => {
+    let data = doc.data();
+
+    // ADMIN LOGIN (may access key)
+    if(
+      data.username === user &&
+      data.password === pass &&
+      data.role === "admin"
+    ){
+
+      if(data.accessKey !== accessKey){
+        alert("Wrong Admin Access Key ❌");
+        return;
+      }
+
+      found = true;
+      alert("Admin Login Success ✅");
+
+      window.location.href = "admin.html";
+    }
+
+    // CASHIER / RIDER LOGIN
+    if(
+      data.username === user &&
+      data.password === pass &&
+      data.role !== "admin"
+    ){
+      found = true;
+      alert(data.role + " Login Success ✅");
+
+      window.location.href = data.role + ".html";
+    }
+  });
+
+  if(!found){
+    alert("Invalid credentials ❌");
+  }
 }
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+/* FIREBASE */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* LOGIN FUNCTION */
+window.login = async function () {
+
+  let user = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+  let key = document.getElementById("key").value;
+  let role = document.getElementById("role").value;
+
+  const snap = await getDocs(collection(db, "accounts"));
+
+  let found = false;
+
+  snap.forEach(doc => {
+    let d = doc.data();
+
+    if (
+      d.username === user &&
+      d.password === pass &&
+      d.role === role
+    ) {
+
+      // ADMIN ACCESS KEY CHECK
+      if (role === "admin") {
+        if (d.accessKey !== key) {
+          document.getElementById("msg").innerText = "Wrong Access Key ❌";
+          return;
+        }
+      }
+
+      found = true;
+
+      document.getElementById("msg").innerText = "Login Success ✅";
+
+      setTimeout(() => {
+        window.location.href = role + ".html";
+      }, 1000);
+    }
+  });
+
+  if (!found) {
+    document.getElementById("msg").innerText = "Invalid Login ❌";
+  }
+};
