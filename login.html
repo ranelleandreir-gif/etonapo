@@ -1,31 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Kasipag Login</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0f172a;
+  color:white;
+}
+
+.login-box{
+  width:320px;
+  padding:30px;
+  background:#1e293b;
+  border-radius:15px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+h2{
+  margin-bottom:20px;
+  color:#06b6d4;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:none;
+  background:#020617;
+  color:white;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#06b6d4;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+#msg{
+  margin-top:10px;
+  font-size:13px;
+}
+</style>
 </head>
-<body class="login-body">
 
-  <div class="login-box">
+<body>
 
-    <h2 id="roleTitle"></h2>
+<div class="login-box">
 
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+  <h2 id="roleTitle"></h2>
 
-    <button onclick="login()">Login</button>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
 
-    <p id="msg"></p>
+  <button onclick="login()">Login</button>
 
-  </div>
+  <p id="msg"></p>
 
-  <script type="module" src="login.js"></script>
+</div>
 
-  <script>
-    let role = localStorage.getItem("role");
-    document.getElementById("roleTitle").innerText = role.toUpperCase() + " LOGIN";
-  </script>
+<script>
+// 🔥 ROLE FROM LOCAL STORAGE
+let role = localStorage.getItem("role") || "guest";
+document.getElementById("roleTitle").innerText = role.toUpperCase() + " LOGIN";
+
+/* 🔥 FAKE ACCOUNTS DATABASE */
+const accounts = {
+  admin: {
+    email: "admin@kasipag.com",
+    password: "admin123"
+  },
+  "rider 1": {
+    email: "rider1@kasipag.com",
+    password: "rider123"
+  },
+  "rider 2": {
+    email: "rider2@kasipag.com",
+    password: "rider123"
+  },
+  "rider 3": {
+    email: "rider3@kasipag.com",
+    password: "rider123"
+  }
+};
+
+/* 🔥 LOGIN FUNCTION */
+function login(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+  let msg = document.getElementById("msg");
+
+  let acc = accounts[role];
+
+  if(!acc){
+    msg.innerHTML = "Invalid role";
+    return;
+  }
+
+  if(email === acc.email && password === acc.password){
+
+    msg.style.color = "#22c55e";
+    msg.innerHTML = "Login Successful ✔";
+
+    // redirect based on role
+    if(role === "admin"){
+      window.location.href = "admin.html";
+    }
+
+    if(role === "rider 1" || role === "rider 2" || role === "rider 3"){
+      window.location.href = "rider.html";
+    }
+
+  } else {
+    msg.style.color = "#ef4444";
+    msg.innerHTML = "Invalid credentials ✖";
+  }
+}
+</script>
 
 </body>
 </html>
