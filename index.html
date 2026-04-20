@@ -1,71 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Kasipag Microfinancing</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Kasipag Microfinancing</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+  color:white;
+  overflow-x:hidden;
+}
+
+/* 🌈 ANIMATED GRADIENT BACKGROUND */
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;
+  height:200%;
+  background: linear-gradient(45deg, #0f172a, #1e3a8a, #06b6d4, #0f172a);
+  background-size:400% 400%;
+  animation: gradientMove 15s ease infinite;
+  z-index:-2;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ✨ FLOATING BLOBS */
+.blob{
+  position:fixed;
+  border-radius:50%;
+  filter: blur(80px);
+  opacity:0.5;
+  z-index:-1;
+  animation: float 10s infinite alternate ease-in-out;
+}
+
+.blob1{
+  width:300px;
+  height:300px;
+  background:#06b6d4;
+  top:10%;
+  left:10%;
+}
+
+.blob2{
+  width:400px;
+  height:400px;
+  background:#3b82f6;
+  bottom:10%;
+  right:10%;
+}
+
+@keyframes float{
+  from{transform:translateY(0);}
+  to{transform:translateY(50px);}
+}
+
+/* NAVBAR */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+  backdrop-filter: blur(10px);
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.logo-area img{
+  width:40px;
+}
+
+nav a{
+  margin:0 15px;
+  text-decoration:none;
+  color:white;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:#06b6d4;
+}
+
+/* HERO */
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:80px 50px;
+  min-height:80vh;
+}
+
+.hero-text{
+  max-width:500px;
+}
+
+.hero-text h1{
+  font-size:50px;
+  margin-bottom:20px;
+}
+
+.hero-text p{
+  margin-bottom:20px;
+  opacity:0.8;
+}
+
+/* BUTTON */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background:#06b6d4;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 20px #06b6d4;
+}
+
+/* HERO IMAGE */
+.hero-img img{
+  width:300px;
+  animation: float 3s infinite alternate;
+}
+
+/* FEATURES */
+.features{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  padding:50px;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  padding:30px;
+  border-radius:20px;
+  width:250px;
+  text-align:center;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  opacity:0.7;
+}
+</style>
 </head>
+
 <body>
 
-  <!-- NAVBAR -->
-  <header>
-    <div class="logo-area">
-      <img src="kasipag.png" alt="Kasipag Logo">
-      <span>Kasipag Microfinancing</span>
-    </div>
+<!-- FLOATING BACKGROUND -->
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
 
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Loans</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
+<!-- NAVBAR -->
+<header>
+  <div class="logo-area">
+    <img src="kasipag.png">
+    <span>Kasipag Microfinancing</span>
+  </div>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Build Your Future with Kasipag</h1>
-      <p>
-        Fast, reliable, and trusted microfinance solutions for small businesses and entrepreneurs.
-      </p>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Loans</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
 
-     <a href="role-selector.html">
-  <button>
-    Get Started
-  </button>
-</a>
-    </div>
+<!-- HERO -->
+<section class="hero">
 
-    <div class="hero-img">
-      <img src="kasipag.png" alt="Kasipag Logo">
-    </div>
-  </section>
+  <div class="hero-text">
+    <h1>Build Your Future with Kasipag</h1>
+    <p>
+      Fast, reliable, and trusted microfinance solutions for small businesses and entrepreneurs.
+    </p>
 
-  <!-- FEATURES -->
-  <section class="features">
+    <a href="role-selector.html">
+      <button>Get Started</button>
+    </a>
+  </div>
 
-    <div class="card">
-      <h3>💰 Fast Loans</h3>
-      <p>Approve loan applications in minutes.</p>
-    </div>
+  <div class="hero-img">
+    <img src="kasipag.png">
+  </div>
 
-    <div class="card">
-      <h3>📊 Smart Tracking</h3>
-      <p>Monitor payments and balances easily.</p>
-    </div>
+</section>
 
-    <div class="card">
-      <h3>🔒 Secure System</h3>
-      <p>Your data is safe and encrypted.</p>
-    </div>
+<!-- FEATURES -->
+<section class="features">
 
-  </section>
+  <div class="card">
+    <h3>💰 Fast Loans</h3>
+    <p>Approve loan applications in minutes.</p>
+  </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 Kasipag Microfinancing. All rights reserved.</p>
-  </footer>
+  <div class="card">
+    <h3>📊 Smart Tracking</h3>
+    <p>Monitor payments and balances easily.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔒 Secure System</h3>
+    <p>Your data is safe and encrypted.</p>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kasipag Microfinancing. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
