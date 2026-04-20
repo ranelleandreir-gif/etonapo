@@ -263,3 +263,100 @@ th, td {
 .pending {
   color: #facc15;
 }
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #111827;
+  position: fixed;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  color: #22c55e;
+}
+
+.sidebar a {
+  display: block;
+  color: #cbd5e1;
+  margin: 15px 0;
+  text-decoration: none;
+}
+
+/* MAIN */
+.main {
+  margin-left: 240px;
+  padding: 20px;
+  color: white;
+  font-family: Arial;
+  background: #0f172a;
+  min-height: 100vh;
+}
+
+h1 {
+  color: #22c55e;
+}
+
+/* LOAN FORM */
+.loan-form {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.loan-form input,
+.loan-form select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+}
+
+.loan-form button {
+  width: 100%;
+  padding: 10px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* TABLE */
+.table-box {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #334155;
+}
+
+.pending {
+  color: #facc15;
+}
