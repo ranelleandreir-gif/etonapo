@@ -1,23 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Access</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Secure Admin Access</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#020617;
+  color:#fff;
+}
+
+/* 🔐 LOGIN BOX */
+.login-box{
+  background:rgba(15,23,42,0.9);
+  padding:40px;
+  border-radius:20px;
+  width:350px;
+  text-align:center;
+  border:1px solid rgba(6,182,212,0.2);
+  box-shadow:0 0 40px rgba(6,182,212,0.2);
+}
+
+/* LOGO */
+.logo{
+  width:60px;
+  margin-bottom:15px;
+}
+
+/* TITLE */
+h2{
+  margin-bottom:10px;
+}
+
+/* SECURITY TEXT */
+.secure-text{
+  font-size:12px;
+  color:#38bdf8;
+  margin-bottom:20px;
+  opacity:0.8;
+}
+
+/* INPUT */
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:none;
+  background:#020617;
+  color:white;
+  outline:none;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#06b6d4;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  box-shadow:0 0 15px #06b6d4;
+}
+
+/* MESSAGE */
+#msg{
+  margin-top:10px;
+  font-size:13px;
+}
+
+/* ERROR SHAKE */
+.shake{
+  animation:shake 0.3s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  75%{transform:translateX(-5px);}
+  100%{transform:translateX(0);}
+}
+
+/* LOADING BAR */
+.loading{
+  margin-top:10px;
+  height:5px;
+  background:#06b6d4;
+  width:0%;
+  transition:0.4s;
+}
+</style>
 </head>
-<body class="login-body">
 
-  <div class="login-box">
-    <img src="kasipag.png" class="logo">
-    <h2>Admin Access Key</h2>
+<body>
 
-    <input type="password" id="accessKey" placeholder="Enter Access Key">
+<div class="login-box" id="box">
+  <img src="kasipag.png" class="logo">
 
-    <button onclick="checkAccess()">Enter</button>
+  <h2>ADMIN ACCESS</h2>
+  <div class="secure-text">🔐 SECURE AUTHENTICATION REQUIRED</div>
 
-    <p id="msg"></p>
-  </div>
+  <input type="password" id="accessKey" placeholder="Enter Access Key">
 
-  <script type="module" src="admin.js"></script>
+  <button onclick="checkAccess()">VERIFY</button>
+
+  <div class="loading" id="load"></div>
+
+  <p id="msg"></p>
+</div>
+
+<script>
+function checkAccess(){
+  const key = document.getElementById("accessKey").value;
+  const msg = document.getElementById("msg");
+  const box = document.getElementById("box");
+  const load = document.getElementById("load");
+
+  load.style.width = "100%";
+  msg.innerHTML = "Encrypting credentials...";
+
+  setTimeout(()=>{
+    if(key === "admin123"){ // PALITAN MO TO
+      msg.style.color = "#22c55e";
+      msg.innerHTML = "Access Granted ✔";
+      window.location.href = "admin-dashboard.html";
+    } else {
+      msg.style.color = "#ef4444";
+      msg.innerHTML = "Access Denied ✖";
+      box.classList.add("shake");
+      setTimeout(()=>box.classList.remove("shake"),300);
+      load.style.width = "0%";
+    }
+  },1500);
+}
+</script>
+
 </body>
 </html>
