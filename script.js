@@ -24,10 +24,9 @@ function checkAccess() {
   let key = document.getElementById("accessKey").value;
   let msg = document.getElementById("msg");
 
-  // SECRET ADMIN KEY
   if (key === "kasipagadmin") {
-    document.getElementById("gateBox").style.display = "none";
-    document.getElementById("loginBox").style.display = "block";
+    // 👉 redirect to login page
+    window.location.href = "admin-login.html";
   } else {
     msg.innerText = "Wrong Access Key!";
     msg.style.color = "red";
@@ -41,6 +40,6 @@ function adminLogin() {
   if (u === "admin" && p === "1234") {
     window.location.href = "admin.html";
   } else {
-    alert("Invalid Admin Login");
+    alert("Invalid Login");
   }
 }
