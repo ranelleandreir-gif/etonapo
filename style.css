@@ -360,3 +360,11 @@ th, td {
 .pending {
   color: #facc15;
 }
+
+.hidden {
+  display: none;
+}
+
+.section {
+  margin-top: 20px;
+}

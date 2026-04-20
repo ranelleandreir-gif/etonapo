@@ -11,11 +11,10 @@
 <div class="sidebar">
   <h2>Kasipag</h2>
 
-  <a href="#">📊 Dashboard</a>
-  <a href="#">💰 Loans</a>
+  <a href="#" onclick="showSection('dashboard')">📊 Dashboard</a>
+  <a href="#" onclick="showSection('loans')">💰 Loans</a>
   <a href="#">👥 Users</a>
   <a href="#">🏍 Riders</a>
-  <a href="#">⚙ Settings</a>
 </div>
 
 <!-- MAIN -->
@@ -24,64 +23,69 @@
   <h1>Admin Dashboard</h1>
   <p>Welcome back, Admin 👋</p>
 
-  <!-- LOAN FORM -->
-  <div class="loan-form">
-    <h2>Add Loan</h2>
+  <!-- DASHBOARD SECTION -->
+  <div id="dashboard" class="section">
 
-    <input type="text" id="name" placeholder="Borrower Name">
-    <input type="number" id="amount" placeholder="Loan Amount">
+    <div class="cards">
+      <div class="card">
+        <h3>Total Loans</h3>
+        <p>₱120,000</p>
+      </div>
 
-    <select id="type">
-      <option value="Solo">Solo</option>
-      <option value="Group">Group</option>
-    </select>
+      <div class="card">
+        <h3>Active Borrowers</h3>
+        <p>48</p>
+      </div>
 
-    <button onclick="addLoan()">Add Loan</button>
-  </div>
+      <div class="card">
+        <h3>Paid Today</h3>
+        <p>₱8,500</p>
+      </div>
 
-  <!-- CARDS -->
-  <div class="cards">
-
-    <div class="card">
-      <h3>Total Loans</h3>
-      <p>₱120,000</p>
-    </div>
-
-    <div class="card">
-      <h3>Active Borrowers</h3>
-      <p>48</p>
-    </div>
-
-    <div class="card">
-      <h3>Paid Today</h3>
-      <p>₱8,500</p>
-    </div>
-
-    <div class="card">
-      <h3>Pending</h3>
-      <p>12</p>
+      <div class="card">
+        <h3>Pending</h3>
+        <p>12</p>
+      </div>
     </div>
 
   </div>
 
-  <!-- LOAN TABLE -->
-  <div class="table-box">
-    <h2>Recent Loans</h2>
+  <!-- LOANS SECTION (HIDDEN FIRST) -->
+  <div id="loans" class="section hidden">
 
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Amount</th>
-          <th>Type</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+    <!-- LOAN FORM -->
+    <div class="loan-form">
+      <h2>Add Loan</h2>
 
-      <tbody id="loanTable">
-        <!-- dynamic rows -->
-      </tbody>
-    </table>
+      <input type="text" id="name" placeholder="Borrower Name">
+      <input type="number" id="amount" placeholder="Loan Amount">
+
+      <select id="type">
+        <option value="Solo">Solo</option>
+        <option value="Group">Group</option>
+      </select>
+
+      <button onclick="addLoan()">Add Loan</button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+      <h2>Recent Loans</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="loanTable"></tbody>
+      </table>
+    </div>
+
   </div>
 
 </div>

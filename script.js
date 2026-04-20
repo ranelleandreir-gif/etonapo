@@ -68,3 +68,35 @@ function addLoan() {
   document.getElementById("name").value = "";
   document.getElementById("amount").value = "";
 }
+
+function showSection(section) {
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("loans").classList.add("hidden");
+
+  document.getElementById(section).classList.remove("hidden");
+}
+
+function addLoan() {
+  let name = document.getElementById("name").value;
+  let amount = document.getElementById("amount").value;
+  let type = document.getElementById("type").value;
+
+  if (!name || !amount) {
+    alert("Please complete all fields");
+    return;
+  }
+
+  let table = document.getElementById("loanTable");
+
+  let row = table.insertRow();
+
+  row.innerHTML = `
+    <td>${name}</td>
+    <td>₱${amount}</td>
+    <td>${type}</td>
+    <td class="pending">Pending</td>
+  `;
+
+  document.getElementById("name").value = "";
+  document.getElementById("amount").value = "";
+}
