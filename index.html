@@ -17,12 +17,11 @@ body{
   overflow-x:hidden;
 }
 
-/* 🌈 BACKGROUND GRADIENT */
+/* 🌈 ANIMATED BACKGROUND GRADIENT */
 body::before{
   content:"";
   position:fixed;
-  width:200%;
-  height:200%;
+  inset:0;
   background: linear-gradient(45deg,#0f172a,#1e3a8a,#06b6d4,#0f172a);
   background-size:400% 400%;
   animation: gradientMove 15s ease infinite;
@@ -35,12 +34,12 @@ body::before{
   100%{background-position:0% 50%;}
 }
 
-/* ✨ FLOATING BLUR BLOBS */
+/* ✨ FLOATING BLOBS */
 .blob{
   position:fixed;
   border-radius:50%;
   filter:blur(90px);
-  opacity:0.4;
+  opacity:0.35;
   z-index:-2;
 }
 
@@ -97,7 +96,7 @@ nav a:hover{
   opacity:1;
 }
 
-/* 🔥 HERO SECTION WITH BACKGROUND IMAGE */
+/* 🔥 HERO SECTION */
 .hero{
   position:relative;
   min-height:90vh;
@@ -108,35 +107,38 @@ nav a:hover{
   overflow:hidden;
 }
 
-/* BACKGROUND IMAGE (FADED EFFECT) */
+/* 🎯 BACKGROUND IMAGE (VISIBLE + PROFESSIONAL) */
 .hero::before{
   content:"";
   position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   background:url('kasipag2.png') center/cover no-repeat;
-  opacity:0.25;
-  filter: blur(2px);
-  z-index:-1;
+  opacity:0.45;
+  transform:scale(1.05);
+  z-index:-2;
 }
 
-/* DARK OVERLAY PARA READABILITY */
+/* 🎯 SOFT OVERLAY */
 .hero::after{
   content:"";
   position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.5);
+  inset:0;
+  background: linear-gradient(
+    to right,
+    rgba(15,23,42,0.75),
+    rgba(15,23,42,0.4),
+    rgba(15,23,42,0.2)
+  );
   z-index:-1;
 }
 
 /* TEXT */
 .hero-text{
   max-width:550px;
+  background:rgba(0,0,0,0.25);
+  padding:30px;
+  border-radius:20px;
+  backdrop-filter: blur(10px);
 }
 
 .hero-text h1{
@@ -191,6 +193,7 @@ button:hover{
 .card:hover{
   transform:translateY(-12px);
   border-color:#06b6d4;
+  box-shadow:0 20px 40px rgba(0,0,0,0.3);
 }
 
 /* FOOTER */
@@ -200,7 +203,7 @@ footer{
   opacity:0.6;
 }
 
-/* RESPONSIVE */
+/* 📱 RESPONSIVE */
 @media(max-width:900px){
   .hero{
     flex-direction:column;
