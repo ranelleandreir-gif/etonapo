@@ -9,7 +9,7 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family:'Segoe UI', sans-serif;
 }
 
 body{
@@ -17,16 +17,16 @@ body{
   overflow-x:hidden;
 }
 
-/* 🌈 ANIMATED GRADIENT BACKGROUND */
+/* 🌈 BACKGROUND GRADIENT */
 body::before{
   content:"";
   position:fixed;
   width:200%;
   height:200%;
-  background: linear-gradient(45deg, #0f172a, #1e3a8a, #06b6d4, #0f172a);
+  background: linear-gradient(45deg,#0f172a,#1e3a8a,#06b6d4,#0f172a);
   background-size:400% 400%;
   animation: gradientMove 15s ease infinite;
-  z-index:-2;
+  z-index:-3;
 }
 
 @keyframes gradientMove{
@@ -35,35 +35,29 @@ body::before{
   100%{background-position:0% 50%;}
 }
 
-/* ✨ FLOATING BLOBS */
+/* ✨ FLOATING BLUR BLOBS */
 .blob{
   position:fixed;
   border-radius:50%;
-  filter: blur(80px);
-  opacity:0.5;
-  z-index:-1;
-  animation: float 10s infinite alternate ease-in-out;
+  filter:blur(90px);
+  opacity:0.4;
+  z-index:-2;
 }
 
 .blob1{
-  width:300px;
-  height:300px;
+  width:350px;
+  height:350px;
   background:#06b6d4;
   top:10%;
   left:10%;
 }
 
 .blob2{
-  width:400px;
-  height:400px;
+  width:450px;
+  height:450px;
   background:#3b82f6;
   bottom:10%;
   right:10%;
-}
-
-@keyframes float{
-  from{transform:translateY(0);}
-  to{transform:translateY(50px);}
 }
 
 /* NAVBAR */
@@ -71,15 +65,18 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:20px 50px;
-  backdrop-filter: blur(10px);
+  padding:20px 60px;
+  backdrop-filter: blur(15px);
+  background:rgba(255,255,255,0.05);
+  position:sticky;
+  top:0;
+  z-index:10;
 }
 
 .logo-area{
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:20px;
   font-weight:bold;
 }
 
@@ -91,57 +88,85 @@ nav a{
   margin:0 15px;
   text-decoration:none;
   color:white;
+  opacity:0.8;
   transition:0.3s;
 }
 
 nav a:hover{
   color:#06b6d4;
+  opacity:1;
 }
 
-/* HERO */
+/* 🔥 HERO SECTION WITH BACKGROUND IMAGE */
 .hero{
+  position:relative;
+  min-height:90vh;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  padding:80px 50px;
-  min-height:80vh;
+  justify-content:space-between;
+  padding:80px 60px;
+  overflow:hidden;
 }
 
+/* BACKGROUND IMAGE (FADED EFFECT) */
+.hero::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:url('kasipag2.png') center/cover no-repeat;
+  opacity:0.25;
+  filter: blur(2px);
+  z-index:-1;
+}
+
+/* DARK OVERLAY PARA READABILITY */
+.hero::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  z-index:-1;
+}
+
+/* TEXT */
 .hero-text{
-  max-width:500px;
+  max-width:550px;
 }
 
 .hero-text h1{
-  font-size:50px;
+  font-size:60px;
   margin-bottom:20px;
+  line-height:1.1;
 }
 
 .hero-text p{
-  margin-bottom:20px;
-  opacity:0.8;
+  opacity:0.85;
+  margin-bottom:30px;
+  font-size:18px;
 }
 
 /* BUTTON */
 button{
-  padding:12px 25px;
+  padding:14px 30px;
   border:none;
-  border-radius:30px;
+  border-radius:50px;
   background:#06b6d4;
   color:white;
   font-size:16px;
   cursor:pointer;
   transition:0.3s;
+  box-shadow:0 10px 25px rgba(6,182,212,0.3);
 }
 
 button:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 20px #06b6d4;
-}
-
-/* HERO IMAGE */
-.hero-img img{
-  width:300px;
-  animation: float 3s infinite alternate;
+  transform:scale(1.08);
+  box-shadow:0 0 25px #06b6d4;
 }
 
 /* FEATURES */
@@ -149,40 +174,57 @@ button:hover{
   display:flex;
   justify-content:center;
   gap:30px;
-  padding:50px;
+  padding:80px 60px;
 }
 
 .card{
-  background:rgba(255,255,255,0.1);
-  backdrop-filter: blur(10px);
+  background:rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
   padding:30px;
   border-radius:20px;
-  width:250px;
+  width:260px;
   text-align:center;
-  transition:0.3s;
+  border:1px solid rgba(255,255,255,0.1);
+  transition:0.4s;
 }
 
 .card:hover{
-  transform:translateY(-10px);
-  box-shadow:0 0 20px rgba(0,0,0,0.3);
+  transform:translateY(-12px);
+  border-color:#06b6d4;
 }
 
 /* FOOTER */
 footer{
   text-align:center;
-  padding:20px;
-  opacity:0.7;
+  padding:30px;
+  opacity:0.6;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{
+    flex-direction:column;
+    text-align:center;
+    gap:40px;
+  }
+
+  .hero-text h1{
+    font-size:40px;
+  }
+
+  .features{
+    flex-direction:column;
+    align-items:center;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- FLOATING BACKGROUND -->
 <div class="blob blob1"></div>
 <div class="blob blob2"></div>
 
-<!-- NAVBAR -->
 <header>
   <div class="logo-area">
     <img src="kasipag.png">
@@ -197,7 +239,6 @@ footer{
   </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero">
 
   <div class="hero-text">
@@ -211,13 +252,8 @@ footer{
     </a>
   </div>
 
-  <div class="hero-img">
-    <img src="kasipag2.png">
-  </div>
-
 </section>
 
-<!-- FEATURES -->
 <section class="features">
 
   <div class="card">
@@ -237,7 +273,6 @@ footer{
 
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>© 2026 Kasipag Microfinancing. All rights reserved.</p>
 </footer>
