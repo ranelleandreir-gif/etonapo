@@ -14,49 +14,7 @@
 
 body{
   color:white;
-  overflow-x:hidden;
-}
-
-/* 🌈 ANIMATED BACKGROUND GRADIENT */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background: linear-gradient(45deg,#0f172a,#1e3a8a,#06b6d4,#0f172a);
-  background-size:400% 400%;
-  animation: gradientMove 15s ease infinite;
-  z-index:-3;
-}
-
-@keyframes gradientMove{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-/* ✨ FLOATING BLOBS */
-.blob{
-  position:fixed;
-  border-radius:50%;
-  filter:blur(90px);
-  opacity:0.35;
-  z-index:-2;
-}
-
-.blob1{
-  width:350px;
-  height:350px;
-  background:#06b6d4;
-  top:10%;
-  left:10%;
-}
-
-.blob2{
-  width:450px;
-  height:450px;
-  background:#3b82f6;
-  bottom:10%;
-  right:10%;
+  background:#0f172a;
 }
 
 /* NAVBAR */
@@ -65,8 +23,7 @@ header{
   justify-content:space-between;
   align-items:center;
   padding:20px 60px;
-  backdrop-filter: blur(15px);
-  background:rgba(255,255,255,0.05);
+  background:rgba(0,0,0,0.5);
   position:sticky;
   top:0;
   z-index:10;
@@ -88,73 +45,39 @@ nav a{
   text-decoration:none;
   color:white;
   opacity:0.8;
-  transition:0.3s;
 }
 
 nav a:hover{
   color:#06b6d4;
-  opacity:1;
 }
 
-/* 🔥 HERO SECTION */
+/* HERO */
 .hero{
-  position:relative;
   min-height:90vh;
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:80px 60px;
-  overflow:hidden;
+  background:linear-gradient(to right, #0f172a, #1e3a8a);
 }
 
-/* 🎯 BACKGROUND IMAGE (VISIBLE + PROFESSIONAL) */
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:url('kasipag2.png') center/cover no-repeat;
-  opacity:0.45;
-  transform:scale(1.05);
-  z-index:-2;
-}
-
-/* 🎯 SOFT OVERLAY */
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(
-    to right,
-    rgba(15,23,42,0.75),
-    rgba(15,23,42,0.4),
-    rgba(15,23,42,0.2)
-  );
-  z-index:-1;
-}
-
-/* TEXT */
 .hero-text{
   max-width:550px;
-  background:rgba(0,0,0,0.25);
-  padding:30px;
-  border-radius:20px;
-  backdrop-filter: blur(10px);
 }
 
 .hero-text h1{
-  font-size:60px;
+  font-size:55px;
   margin-bottom:20px;
-  line-height:1.1;
 }
 
 .hero-text p{
-  opacity:0.85;
+  opacity:0.8;
   margin-bottom:30px;
   font-size:18px;
 }
 
 /* BUTTON */
-button{
+.btn{
   padding:14px 30px;
   border:none;
   border-radius:50px;
@@ -162,13 +85,26 @@ button{
   color:white;
   font-size:16px;
   cursor:pointer;
-  transition:0.3s;
-  box-shadow:0 10px 25px rgba(6,182,212,0.3);
 }
 
-button:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 25px #06b6d4;
+/* HOW IT WORKS */
+.steps{
+  padding:80px 60px;
+  text-align:center;
+}
+
+.steps h2{
+  margin-bottom:40px;
+}
+
+.step-container{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+}
+
+.step{
+  max-width:200px;
 }
 
 /* FEATURES */
@@ -180,20 +116,22 @@ button:hover{
 }
 
 .card{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px);
+  background:#1e293b;
   padding:30px;
-  border-radius:20px;
+  border-radius:15px;
   width:260px;
   text-align:center;
-  border:1px solid rgba(255,255,255,0.1);
-  transition:0.4s;
 }
 
-.card:hover{
-  transform:translateY(-12px);
-  border-color:#06b6d4;
-  box-shadow:0 20px 40px rgba(0,0,0,0.3);
+/* CTA */
+.cta{
+  text-align:center;
+  padding:80px;
+  background:#06b6d4;
+}
+
+.cta h2{
+  margin-bottom:20px;
 }
 
 /* FOOTER */
@@ -203,18 +141,14 @@ footer{
   opacity:0.6;
 }
 
-/* 📱 RESPONSIVE */
+/* RESPONSIVE */
 @media(max-width:900px){
   .hero{
     flex-direction:column;
     text-align:center;
-    gap:40px;
   }
 
-  .hero-text h1{
-    font-size:40px;
-  }
-
+  .step-container,
   .features{
     flex-direction:column;
     align-items:center;
@@ -225,13 +159,10 @@ footer{
 
 <body>
 
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-
 <header>
   <div class="logo-area">
     <img src="kasipag.png">
-    <span>Kasipag Microfinancing</span>
+    <span>Kasipag</span>
   </div>
 
   <nav>
@@ -243,41 +174,69 @@ footer{
 </header>
 
 <section class="hero">
-
   <div class="hero-text">
-    <h1>Build Your Future with Kasipag</h1>
+    <h1>Fast & Reliable Microfinance</h1>
     <p>
-      Fast, reliable, and trusted microfinance solutions for small businesses and entrepreneurs.
+      Simplified loan collection and payment system with real-time tracking.
     </p>
 
     <a href="role-selector.html">
-      <button>Get Started</button>
+      <button class="btn">Get Started</button>
     </a>
   </div>
+</section>
 
+<!-- HOW IT WORKS -->
+<section class="steps">
+  <h2>How It Works</h2>
+
+  <div class="step-container">
+    <div class="step">
+      <h3>1. Apply</h3>
+      <p>Submit your loan or payment request.</p>
+    </div>
+
+    <div class="step">
+      <h3>2. Collect</h3>
+      <p>Rider collects payment from client.</p>
+    </div>
+
+    <div class="step">
+      <h3>3. Confirm</h3>
+      <p>Cashier verifies and updates system.</p>
+    </div>
+  </div>
 </section>
 
 <section class="features">
 
   <div class="card">
     <h3>💰 Fast Loans</h3>
-    <p>Approve loan applications in minutes.</p>
+    <p>Approve applications quickly.</p>
   </div>
 
   <div class="card">
-    <h3>📊 Smart Tracking</h3>
-    <p>Monitor payments and balances easily.</p>
+    <h3>📊 Tracking</h3>
+    <p>Monitor payments in real-time.</p>
   </div>
 
   <div class="card">
-    <h3>🔒 Secure System</h3>
-    <p>Your data is safe and encrypted.</p>
+    <h3>🔒 Secure</h3>
+    <p>Protected and reliable system.</p>
   </div>
 
 </section>
 
+<!-- CTA -->
+<section class="cta">
+  <h2>Start Using Kasipag Today</h2>
+  <a href="role-selector.html">
+    <button class="btn">Register Now</button>
+  </a>
+</section>
+
 <footer>
-  <p>© 2026 Kasipag Microfinancing. All rights reserved.</p>
+  <p>© 2026 Kasipag Microfinancing</p>
 </footer>
 
 </body>
