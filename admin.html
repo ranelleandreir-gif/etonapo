@@ -7,60 +7,41 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <h2>Kasipag</h2>
 
   <a href="#" onclick="showSection('dashboard')">📊 Dashboard</a>
   <a href="#" onclick="showSection('loans')">💰 Loans</a>
-  <a href="#">👥 Users</a>
-  <a href="#">🏍 Riders</a>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-  <h1>Admin Dashboard</h1>
-  <p>Welcome back, Admin 👋</p>
-
-  <!-- DASHBOARD SECTION -->
+  <!-- DASHBOARD -->
   <div id="dashboard" class="section">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome back, Admin 👋</p>
 
     <div class="cards">
-      <div class="card">
-        <h3>Total Loans</h3>
-        <p>₱120,000</p>
-      </div>
-
-      <div class="card">
-        <h3>Active Borrowers</h3>
-        <p>48</p>
-      </div>
-
-      <div class="card">
-        <h3>Paid Today</h3>
-        <p>₱8,500</p>
-      </div>
-
-      <div class="card">
-        <h3>Pending</h3>
-        <p>12</p>
-      </div>
+      <div class="card"><h3>Total Loans</h3><p>₱120,000</p></div>
+      <div class="card"><h3>Borrowers</h3><p>48</p></div>
+      <div class="card"><h3>Paid</h3><p>₱8,500</p></div>
+      <div class="card"><h3>Pending</h3><p>12</p></div>
     </div>
-
   </div>
 
-  <!-- LOANS SECTION (HIDDEN FIRST) -->
+  <!-- LOANS -->
   <div id="loans" class="section hidden">
 
-    <!-- LOAN FORM -->
     <div class="loan-form">
       <h2>Add Loan</h2>
 
-      <input type="text" id="name" placeholder="Borrower Name">
+      <input type="text" id="leader" placeholder="Team Leader Name">
+
+      <input type="text" id="members" placeholder="Members (comma separated)">
+
       <input type="number" id="amount" placeholder="Loan Amount">
 
-      <select id="type">
+      <select id="type" onchange="toggleMembers()">
         <option value="Solo">Solo</option>
         <option value="Group">Group</option>
       </select>
@@ -68,14 +49,13 @@
       <button onclick="addLoan()">Add Loan</button>
     </div>
 
-    <!-- TABLE -->
     <div class="table-box">
       <h2>Recent Loans</h2>
 
       <table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Borrower</th>
             <th>Amount</th>
             <th>Type</th>
             <th>Status</th>

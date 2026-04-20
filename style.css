@@ -368,3 +368,40 @@ th, td {
 .section {
   margin-top: 20px;
 }
+
+.hidden {
+  display: none;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.loan-form {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.loan-form input,
+.loan-form select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+}
+
+.loan-form button {
+  width: 100%;
+  padding: 10px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  border-radius: 8px;
+}
+
+small {
+  color: #94a3b8;
+}

@@ -76,27 +76,55 @@ function showSection(section) {
   document.getElementById(section).classList.remove("hidden");
 }
 
+function toggleMembers() {
+  let type = document.getElementById("type").value;
+  let members = document.getElementById("members");
+
+  if (type === "Solo") {
+    members.disabled = true;
+    members.value = "";
+  } else {
+    members.disabled = false;
+  }
+}
+
+// default state
+toggleMembers();
+
 function addLoan() {
-  let name = document.getElementById("name").value;
+  let leader = document.getElementById("leader").value;
+  let members = document.getElementById("members").value;
   let amount = document.getElementById("amount").value;
   let type = document.getElementById("type").value;
 
-  if (!name || !amount) {
-    alert("Please complete all fields");
+  if (!leader || !amount) {
+    alert("Please fill required fields");
     return;
   }
 
   let table = document.getElementById("loanTable");
-
   let row = table.insertRow();
 
-  row.innerHTML = `
-    <td>${name}</td>
-    <td>₱${amount}</td>
-    <td>${type}</td>
-    <td class="pending">Pending</td>
-  `;
+  if (type === "Solo") {
+    row.innerHTML = `
+      <td>${leader}</td>
+      <td>₱${amount}</td>
+      <td>Solo</td>
+      <td class="pending">Pending</td>
+    `;
+  } else {
+    row.innerHTML = `
+      <td>
+        <b>${leader}</b><br>
+        <small>Members: ${members}</small>
+      </td>
+      <td>₱${amount}</td>
+      <td>Group</td>
+      <td class="pending">Pending</td>
+    `;
+  }
 
-  document.getElementById("name").value = "";
+  document.getElementById("leader").value = "";
+  document.getElementById("members").value = "";
   document.getElementById("amount").value = "";
 }
