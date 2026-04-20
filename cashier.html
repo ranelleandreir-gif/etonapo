@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kasipag Cashier</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  background:#0f172a;
+  color:white;
+}
+
+/* HEADER */
+.header{
+  background:#020617;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header h2{
+  color:#06b6d4;
+}
+
+/* CONTAINER */
+.container{
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  background:#1e293b;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+/* STATUS */
+.status{
+  padding:5px 10px;
+  border-radius:10px;
+  font-size:12px;
+}
+
+.pending{
+  background:#f59e0b;
+}
+
+.paid{
+  background:#22c55e;
+}
+
+.verified{
+  background:#3b82f6;
+}
+
+/* BUTTON */
+button{
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#06b6d4;
+  color:white;
+}
+
+button:hover{
+  opacity:0.8;
+}
+
+/* STATS */
+.stats{
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat p{
+  font-size:20px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>Cashier Panel</h2>
+  <span>Kasipag System</span>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <p id="total">0</p>
+    <small>Payments</small>
+  </div>
+  <div class="stat">
+    <p id="verified">0</p>
+    <small>Verified</small>
+  </div>
+  <div class="stat">
+    <p id="pending">0</p>
+    <small>Pending</small>
+  </div>
+</div>
+
+<!-- LIST -->
+<div class="container" id="list"></div>
+
+<script>
+
+// GET ALL DATA FROM ADMIN/RIDER
+function getData(){
+  return JSON.parse(localStorage.getItem("loans")) || [];
+}
+
+// RENDER
+function render(){
+  let list = document.getElementById("list");
+  let data = getData();
+
+  list.innerHTML = "";
+
+  let total = data.length;
+  let verified = data.filter(d => d.status === "verified").length;
+  let pending = data.filter(d => d.status === "paid").length;
+
+  document.getElementById("total").innerText = total;
+  document.getElementById("verified").innerText = verified;
+  document.getElementById("pending").innerText = pending;
+
+  data.forEach((d,i)=>{
+
+    list.innerHTML += `
+      <div class="card">
+        <h3>${d.leader}</h3>
+        <small>₱${d.amount} | ${d.rider}</small>
+
+        <div class="row">
+          <span class="status ${d.status}">
+            ${d.status}
+          </span>
+        </div>
+
+        <button onclick="verify(${d.id})">
+          Mark as Verified
+        </button>
+      </div>
+    `;
+  });
+}
+
+// VERIFY PAYMENT
+function verify(id){
+  let data = getData();
+
+  data = data.map(d=>{
+    if(d.id === id){
+      d.status = "verified";
+    }
+    return d;
+  });
+
+  localStorage.setItem("loans", JSON.stringify(data));
+  render();
+}
+
+// INIT
+render();
+
+</script>
+
+</body>
+</html>
