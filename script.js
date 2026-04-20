@@ -391,7 +391,7 @@ window.login = async function () {
       document.getElementById("msg").innerText = "Login Success ✅";
 
       setTimeout(() => {
-        window.location.href = role + ".html";
+        window.location.href = role + "login.html";
       }, 1000);
     }
   });
