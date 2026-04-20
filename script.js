@@ -134,3 +134,78 @@ async function loadLoans(){
    INIT LOAD
 ========================= */
 loadLoans();
+
+window.toggle = function () {
+  let type = document.getElementById("type").value;
+  let members = document.getElementById("members");
+
+  if (type === "Solo") {
+    members.value = "";
+    members.style.display = "none"; // hide
+  } else {
+    members.style.display = "block"; // show
+    members.disabled = false;
+  }
+};
+
+window.addLoan = async function () {
+
+  let leader = document.getElementById("leader").value;
+  let members = document.getElementById("members").value;
+  let amount = document.getElementById("amount").value;
+  let type = document.getElementById("type").value;
+
+  if (!leader || !amount) {
+    alert("Fill required fields");
+    return;
+  }
+
+  await addDoc(collection(db, "loans"), {
+    leader: leader,
+    members: type === "Solo" ? "" : members,
+    amount: amount,
+    type: type,
+    status: "Pending"
+  });
+
+  loadLoans();
+};
+
+async function loadLoans() {
+
+  let table = document.getElementById("table");
+  table.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "loans"));
+
+  let total = 0;
+  let borrowers = 0;
+  let groups = 0;
+
+  snap.forEach(doc => {
+
+    let l = doc.data();
+
+    total += Number(l.amount);
+    borrowers++;
+
+    if (l.type === "Group") groups++;
+
+    table.innerHTML += `
+      <tr>
+        <td>
+          <b>${l.leader}</b><br>
+          ${l.type === "Group" ? `<small>${l.members}</small>` : ""}
+        </td>
+        <td>₱${l.amount}</td>
+        <td>${l.type}</td>
+        <td>${l.status}</td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("total").innerText = "₱" + total;
+  document.getElementById("borrowers").innerText = borrowers;
+  document.getElementById("groups").innerText = groups;
+  document.getElementById("pending").innerText = borrowers;
+}
