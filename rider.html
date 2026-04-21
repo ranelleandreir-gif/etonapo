@@ -1,200 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Kasipag Rider</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI', sans-serif;
+:root{
+  --bg:#0b1220;
+  --card:#111a2e;
+  --muted:#9aa4b2;
+  --primary:#06b6d4;
+  --success:#22c55e;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --border:rgba(255,255,255,.08);
 }
 
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI, system-ui, -apple-system;}
+
 body{
-  background:#0f172a;
-  color:white;
+  background:linear-gradient(135deg,#020617,#0f172a);
+  color:#e5e7eb;
 }
 
 /* HEADER */
 .header{
-  padding:20px;
-  background:#020617;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  position:sticky; top:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px;
+  background:rgba(2,6,23,.8);
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid var(--border);
 }
 
-.header h2{
-  font-size:18px;
+.title{
+  font-weight:600; letter-spacing:.5px;
 }
 
 .badge{
-  background:#06b6d4;
-  padding:6px 12px;
-  border-radius:20px;
-  font-size:12px;
+  font-size:12px; padding:6px 10px; border-radius:999px;
+  background:rgba(6,182,212,.15); color:#67e8f9;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:16px;
 }
 
 /* STATS */
 .stats{
-  display:flex;
-  justify-content:space-around;
-  padding:15px;
-}
-
-.stat{
-  text-align:center;
-}
-
-.stat p{
-  font-size:20px;
-  font-weight:bold;
-}
-
-/* LIST */
-.container{
-  padding:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+  margin-bottom:16px;
 }
 
 .card{
-  background:#1e293b;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:15px;
-  border:1px solid rgba(255,255,255,0.1);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
 }
 
-.card h3{
-  margin-bottom:5px;
+.card h4{font-size:13px;color:var(--muted);margin-bottom:6px;}
+.card p{font-size:22px;font-weight:600;}
+
+/* FILTER BAR */
+.filters{
+  display:flex; gap:8px; flex-wrap:wrap;
+  margin-bottom:10px;
 }
 
-.card small{
-  opacity:0.7;
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  margin-top:10px;
-}
-
-/* STATUS */
-.status{
-  padding:5px 10px;
+.filters input, .filters select{
+  padding:10px;
   border-radius:10px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:#e5e7eb;
+}
+
+/* TABLE (desktop) */
+.table-wrap{
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:640px;
+}
+
+th,td{
+  padding:12px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+}
+
+th{
+  font-size:12px; color:var(--muted);
+  background:#0b1326;
+}
+
+.status{
+  padding:4px 10px;
+  border-radius:999px;
   font-size:12px;
 }
+.pending{background:rgba(245,158,11,.15); color:#fbbf24;}
+.paid{background:rgba(34,197,94,.15); color:#4ade80;}
+.assigned{background:rgba(59,130,246,.15); color:#60a5fa;}
 
-.pending{
-  background:#f59e0b;
+/* BUTTONS */
+.btn{
+  padding:8px 12px;
+  border:none; border-radius:10px;
+  cursor:pointer; font-weight:600;
+}
+.btn-primary{background:var(--primary); color:#022c33;}
+.btn-success{background:var(--success); color:#022c33;}
+.btn-outline{
+  background:transparent; color:#e5e7eb;
+  border:1px solid var(--border);
 }
 
-.paid{
-  background:#22c55e;
+/* MOBILE CARDS */
+.mobile-list{display:none; gap:10px;}
+
+.item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
 }
 
-/* BUTTON */
-button{
-  width:100%;
+.item .row{
+  display:flex; justify-content:space-between; margin-bottom:6px;
+}
+
+.small{font-size:12px;color:var(--muted);}
+
+/* FOOTER NAV (mobile feel) */
+.footer{
+  position:sticky; bottom:0;
+  display:flex; gap:8px;
   padding:10px;
-  margin-top:10px;
-  border:none;
-  border-radius:10px;
-  background:#06b6d4;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
+  background:rgba(2,6,23,.9);
+  border-top:1px solid var(--border);
 }
 
-button:disabled{
-  background:gray;
+.footer button{flex:1}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .table-wrap{display:none;}
+  .mobile-list{display:grid;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
-  <h2>Rider Dashboard</h2>
-  <div class="badge">Rider 1</div>
+  <div class="title" id="title">Rider</div>
+  <div class="badge" id="roleBadge">RIDER</div>
 </div>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat">
-    <p id="total">0</p>
-    <small>Total</small>
+<div class="container">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="card"><h4>Assigned</h4><p id="total">0</p></div>
+    <div class="card"><h4>Collected</h4><p id="paid">0</p></div>
+    <div class="card"><h4>Pending</h4><p id="pending">0</p></div>
   </div>
 
-  <div class="stat">
-    <p id="collected">0</p>
-    <small>Collected</small>
+  <!-- FILTER -->
+  <div class="filters">
+    <input id="search" placeholder="Search borrower..."/>
+    <select id="statusFilter">
+      <option value="all">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Paid">Paid</option>
+    </select>
+    <button class="btn btn-outline" onclick="logout()">Logout</button>
   </div>
 
-  <div class="stat">
-    <p id="pending">0</p>
-    <small>Pending</small>
+  <!-- TABLE (desktop) -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Borrower</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="table"></tbody>
+    </table>
   </div>
+
+  <!-- MOBILE CARDS -->
+  <div class="mobile-list" id="mobileList"></div>
+
 </div>
 
-<!-- LIST -->
-<div class="container" id="list"></div>
+<div class="footer">
+  <button class="btn btn-primary" onclick="refresh()">Refresh</button>
+  <button class="btn btn-outline" onclick="scrollTo(0,0)">Top</button>
+</div>
 
 <script>
+/* ROLE GUARD */
+let role = (localStorage.getItem("role") || "").toLowerCase();
+if(!role.includes("rider")){
+  alert("Unauthorized");
+  location.href="index.html";
+}
 
-// SAMPLE DATA (galing dapat sa admin/database)
-let data = [
-  {name:"Juan Dela Cruz", amount:5000, status:"pending"},
-  {name:"Maria Santos", amount:3000, status:"pending"},
-  {name:"Pedro Reyes", amount:7000, status:"pending"}
-];
+let riderName = role.replace(/(^|\s)\w/g, s => s.toUpperCase()); // "rider 1" -> "Rider 1"
+document.getElementById("title").innerText = riderName + " Dashboard";
+document.getElementById("roleBadge").innerText = riderName.toUpperCase();
 
-// RENDER LIST
+/* DATA */
+let loans = JSON.parse(localStorage.getItem("loans")) || [];
+
+/* RENDER */
 function render(){
-  let list = document.getElementById("list");
-  list.innerHTML = "";
+  let table = document.getElementById("table");
+  let mobile = document.getElementById("mobileList");
+  table.innerHTML = "";
+  mobile.innerHTML = "";
 
-  let total = data.length;
-  let collected = data.filter(d=>d.status==="paid").length;
-  let pending = total - collected;
+  let total=0, paid=0, pending=0;
 
-  document.getElementById("total").innerText = total;
-  document.getElementById("collected").innerText = collected;
-  document.getElementById("pending").innerText = pending;
+  let q = document.getElementById("search").value.toLowerCase();
+  let f = document.getElementById("statusFilter").value;
 
-  data.forEach((d,i)=>{
-    list.innerHTML += `
-      <div class="card">
-        <h3>${d.name}</h3>
-        <small>Amount: ₱${d.amount}</small>
+  loans.forEach((l, i)=>{
+    if(l.rider !== riderName) return;
 
-        <div class="row">
-          <span class="status ${d.status}">
-            ${d.status === "paid" ? "Paid" : "Pending"}
-          </span>
+    if(q && !l.leader.toLowerCase().includes(q)) return;
+    if(f !== "all" && l.status !== f) return;
+
+    total++;
+    if(l.status==="Paid") paid++; else pending++;
+
+    // DESKTOP ROW
+    table.innerHTML += `
+      <tr>
+        <td>${l.leader}</td>
+        <td>₱${l.amount}</td>
+        <td>${l.type}</td>
+        <td><span class="status ${l.status==="Paid"?"paid":"pending"}">${l.status}</span></td>
+        <td>
+          ${l.status==="Pending"
+            ? `<button class="btn btn-success" onclick="collect(${i})">Collect</button>`
+            : "✔"}
+        </td>
+      </tr>
+    `;
+
+    // MOBILE CARD
+    mobile.innerHTML += `
+      <div class="item">
+        <div class="row"><strong>${l.leader}</strong><span class="status ${l.status==="Paid"?"paid":"pending"}">${l.status}</span></div>
+        <div class="row small"><span>Amount</span><span>₱${l.amount}</span></div>
+        <div class="row small"><span>Type</span><span>${l.type}</span></div>
+        <div class="row" style="margin-top:8px;">
+          ${l.status==="Pending"
+            ? `<button class="btn btn-success" onclick="collect(${i})">Collect</button>`
+            : `<span class="small">Collected ✔</span>`}
         </div>
-
-        <button onclick="markPaid(${i})" ${d.status==="paid"?"disabled":""}>
-          Mark as Collected
-        </button>
       </div>
     `;
   });
+
+  document.getElementById("total").innerText = total;
+  document.getElementById("paid").innerText = paid;
+  document.getElementById("pending").innerText = pending;
 }
 
-// MARK AS PAID
-function markPaid(i){
-  data[i].status = "paid";
+/* ACTIONS */
+function collect(i){
+  loans[i].status = "Paid";
+  localStorage.setItem("loans", JSON.stringify(loans));
   render();
 }
 
-// INIT
-render();
+function refresh(){
+  loans = JSON.parse(localStorage.getItem("loans")) || [];
+  render();
+}
 
+function logout(){
+  localStorage.removeItem("role");
+  location.href="index.html";
+}
+
+/* EVENTS */
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("statusFilter").addEventListener("change", render);
+
+/* INIT */
+render();
 </script>
 
 </body>
