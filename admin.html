@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kasipag Loan Admin</title>
+<title>Kasipag Admin System</title>
 
 <style>
 :root{
@@ -26,68 +26,63 @@
 body{
   background:var(--bg);
   color:white;
-  min-height:100vh;
 }
 
 /* HEADER */
 .header{
-  padding:15px 20px;
+  padding:15px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   background:rgba(2,6,23,0.9);
   backdrop-filter:blur(10px);
 }
 
-.header h2{
-  color:var(--blue);
+.header h2{color:var(--blue);}
+
+/* NAV */
+.nav{
+  display:flex;
+  gap:10px;
+  padding:10px;
+  flex-wrap:wrap;
 }
 
-/* CONTAINER */
-.container{
-  padding:20px;
+.nav button{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:#020617;
+  color:white;
+  border:1px solid var(--border);
 }
 
-/* GRID */
+.nav button:hover{
+  background:var(--blue);
+}
+
+/* SECTION */
+.section{
+  display:none;
+  padding:15px;
+}
+
+.active{
+  display:block;
+}
+
+/* CARDS */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:12px;
-  margin-bottom:20px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
 }
 
 .card{
   background:var(--card);
   border:1px solid var(--border);
   padding:15px;
-  border-radius:14px;
-}
-
-/* FORM */
-.form{
-  background:var(--card);
-  padding:15px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  margin-bottom:15px;
-}
-
-input,select{
-  padding:10px;
-  margin:5px;
-  border-radius:8px;
-  border:none;
-  background:#020617;
-  color:white;
-}
-
-button{
-  padding:10px 12px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  background:var(--blue);
-  color:white;
+  border-radius:12px;
 }
 
 /* TABLE */
@@ -104,8 +99,8 @@ th,td{
 
 th{
   background:#020617;
-  color:gray;
   font-size:12px;
+  color:gray;
 }
 
 /* STATUS */
@@ -118,137 +113,91 @@ th{
 .pending{background:var(--yellow);}
 .collected{background:var(--blue);}
 .verified{background:var(--green);}
+.notcollected{background:var(--red);}
 
-/* GROUP TABLE */
-.group-table input{
-  width:100%;
-  margin:2px 0;
+button.action{
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-/* MOBILE */
-@media(max-width:768px){
-  table{font-size:12px;}
-}
+.collect{background:var(--blue);}
+.verify{background:var(--green);}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <h2>Kasipag Loan Admin</h2>
-  <button onclick="logout()" style="background:var(--red)">Logout</button>
+  <h2>Kasipag Admin</h2>
+  <button onclick="logout()" style="background:#ef4444;color:white;border:none;padding:8px 12px;border-radius:8px;">Logout</button>
 </div>
 
-<div class="container">
-
-<!-- STATS -->
-<div class="grid">
-  <div class="card">Total Loans <h2 id="total">0</h2></div>
-  <div class="card">Pending <h2 id="pending">0</h2></div>
-  <div class="card">Collected <h2 id="collected">0</h2></div>
-  <div class="card">Verified <h2 id="verified">0</h2></div>
+<!-- NAVIGATION -->
+<div class="nav">
+  <button onclick="show('dashboard')">Dashboard</button>
+  <button onclick="show('loans')">Loans</button>
+  <button onclick="show('collected')">Collected</button>
+  <button onclick="show('notcollected')">Not Collected</button>
+  <button onclick="show('pending')">Pending</button>
 </div>
 
-<!-- LOAN FORM -->
-<div class="form">
-
-<select id="type" onchange="toggleForm()">
-  <option value="solo">Solo Loan</option>
-  <option value="group">Group Loan</option>
-</select>
-
-<!-- SOLO -->
-<div id="soloForm">
-  <input id="name" placeholder="Borrower Name">
-  <input id="amount" type="number" placeholder="Amount">
+<!-- DASHBOARD -->
+<div id="dashboard" class="section active">
+  <div class="grid">
+    <div class="card">Total Loans <h2 id="t"></h2></div>
+    <div class="card">Pending <h2 id="p"></h2></div>
+    <div class="card">Collected <h2 id="c"></h2></div>
+    <div class="card">Verified <h2 id="v"></h2></div>
+  </div>
 </div>
 
-<!-- GROUP -->
-<div id="groupForm" style="display:none">
-  <table class="group-table">
-    <tr><th>Name</th><th>Amount</th></tr>
-    <tbody id="groupBody"></tbody>
+<!-- LOANS -->
+<div id="loans" class="section">
+  <h3>All Loans</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="allLoans"></tbody>
   </table>
-  <button onclick="addRow()">Add Member</button>
 </div>
 
-<button onclick="addLoan()">Submit Loan</button>
-
+<!-- COLLECTED -->
+<div id="collected" class="section">
+  <h3>Collected Accounts</h3>
+  <div id="collectedList"></div>
 </div>
 
-<!-- TABLE -->
-<table>
-<thead>
-<tr>
-  <th>Name</th>
-  <th>Amount</th>
-  <th>Type</th>
-  <th>Status</th>
-  <th>Action</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
+<!-- NOT COLLECTED -->
+<div id="notcollected" class="section">
+  <h3>Not Collected</h3>
+  <div id="notList"></div>
+</div>
 
+<!-- PENDING -->
+<div id="pending" class="section">
+  <h3>Pending Loans</h3>
+  <div id="pendingList"></div>
 </div>
 
 <script>
 
 let loans = JSON.parse(localStorage.getItem("loans")) || [];
 
-/* TOGGLE FORM */
-function toggleForm(){
-  let type = document.getElementById("type").value;
-  document.getElementById("soloForm").style.display = type==="solo"?"block":"none";
-  document.getElementById("groupForm").style.display = type==="group"?"block":"none";
+/* NAV */
+function show(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-/* ADD GROUP ROW */
-function addRow(){
-  let row = document.createElement("tr");
-  row.innerHTML = `
-    <td><input placeholder="Name"></td>
-    <td><input type="number" placeholder="Amount"></td>
-  `;
-  document.getElementById("groupBody").appendChild(row);
-}
-
-/* ADD LOAN */
-function addLoan(){
-
-  let type = document.getElementById("type").value;
-
-  if(type==="solo"){
-    loans.push({
-      name:name.value,
-      amount:amount.value,
-      type:"Solo",
-      status:"Pending"
-    });
-  }
-
-  else{
-    let rows = document.querySelectorAll("#groupBody tr");
-    rows.forEach(r=>{
-      let n = r.children[0].children[0].value;
-      let a = r.children[1].children[0].value;
-
-      if(n && a){
-        loans.push({
-          name:n,
-          amount:a,
-          type:"Group",
-          status:"Pending"
-        });
-      }
-    });
-  }
-
-  localStorage.setItem("loans",JSON.stringify(loans));
-  render();
-}
-
-/* VERIFY FLOW */
+/* ACTIONS */
 function collect(i){
   loans[i].status="Collected";
   save();
@@ -259,7 +208,6 @@ function verify(i){
   save();
 }
 
-/* SAVE */
 function save(){
   localStorage.setItem("loans",JSON.stringify(loans));
   render();
@@ -270,37 +218,59 @@ function render(){
 
 let t=0,p=0,c=0,v=0;
 
-table.innerHTML="";
+allLoans.innerHTML="";
+collectedList.innerHTML="";
+notList.innerHTML="";
+pendingList.innerHTML="";
 
 loans.forEach((l,i)=>{
 
 t++;
+
 if(l.status==="Pending") p++;
 if(l.status==="Collected") c++;
 if(l.status==="Verified") v++;
 
-table.innerHTML+=`
+/* ALL */
+allLoans.innerHTML+=`
 <tr>
 <td>${l.name}</td>
 <td>₱${l.amount}</td>
-<td>${l.type}</td>
 <td><span class="status ${l.status.toLowerCase()}">${l.status}</span></td>
 <td>
 ${l.status==="Pending"
-? `<button onclick="collect(${i})">Collect</button>`
+? `<button class="action collect" onclick="collect(${i})">Collect</button>`
 : l.status==="Collected"
-? `<button onclick="verify(${i})">Verify</button>`
+? `<button class="action verify" onclick="verify(${i})">Verify</button>`
 : "✔"}
 </td>
 </tr>
 `;
 
+/* COLLECTED */
+if(l.status==="Collected"){
+collectedList.innerHTML+=`
+<div class="card">${l.name} - ₱${l.amount}</div>`;
+}
+
+/* NOT COLLECTED */
+if(l.status==="Pending"){
+notList.innerHTML+=`
+<div class="card">${l.name} - ₱${l.amount}</div>`;
+}
+
+/* PENDING */
+if(l.status==="Pending"){
+pendingList.innerHTML+=`
+<div class="card">${l.name} - ₱${l.amount}</div>`;
+}
+
 });
 
-total.innerText=t;
-pending.innerText=p;
-collected.innerText=c;
-verified.innerText=v;
+t.innerText=t;
+p.innerText=p;
+c.innerText=c;
+v.innerText=v;
 
 }
 
