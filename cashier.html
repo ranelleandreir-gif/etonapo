@@ -2,101 +2,124 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kasipag Cashier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cashier Ledger</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI', sans-serif;
+:root{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --border:rgba(255,255,255,0.1);
+  --primary:#06b6d4;
+  --success:#22c55e;
+  --blue:#3b82f6;
 }
 
-body{
-  background:#0f172a;
-  color:white;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+
+body{background:var(--bg);color:white;}
 
 /* HEADER */
 .header{
+  padding:15px;
   background:#020617;
-  padding:20px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-}
-
-.header h2{
-  color:#06b6d4;
 }
 
 /* CONTAINER */
-.container{
-  padding:20px;
-}
+.container{padding:15px;}
 
-/* CARD */
-.card{
-  background:#1e293b;
-  padding:15px;
-  border-radius:12px;
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px;
   margin-bottom:15px;
-  border:1px solid rgba(255,255,255,0.1);
 }
 
-.row{
+.card{
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+
+.card h4{font-size:12px;color:gray;}
+.card p{font-size:18px;font-weight:bold;}
+
+/* FILTER */
+.filters{
   display:flex;
-  justify-content:space-between;
-  margin-top:10px;
+  gap:10px;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+}
+
+.filters input, .filters select{
+  padding:8px;
+  border-radius:8px;
+  border:none;
+  background:#020617;
+  color:white;
+}
+
+/* TABLE (DESKTOP) */
+.table-wrap{
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid var(--border);
+}
+
+th{background:#020617;color:gray;font-size:12px;}
+
+/* MOBILE CARDS */
+.mobile{
+  display:none;
+}
+
+.item{
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+  border:1px solid var(--border);
 }
 
 /* STATUS */
 .status{
-  padding:5px 10px;
-  border-radius:10px;
+  padding:4px 8px;
+  border-radius:8px;
   font-size:12px;
 }
 
-.pending{
-  background:#f59e0b;
-}
-
-.paid{
-  background:#22c55e;
-}
-
-.verified{
-  background:#3b82f6;
-}
+.collected{background:var(--blue);}
+.verified{background:var(--success);}
 
 /* BUTTON */
 button{
-  padding:8px 12px;
+  padding:6px 10px;
   border:none;
   border-radius:8px;
+  background:var(--primary);
   cursor:pointer;
-  background:#06b6d4;
-  color:white;
+  margin-top:5px;
 }
 
-button:hover{
-  opacity:0.8;
-}
-
-/* STATS */
-.stats{
-  display:flex;
-  justify-content:space-around;
-  padding:15px;
-}
-
-.stat{
-  text-align:center;
-}
-
-.stat p{
-  font-size:20px;
-  font-weight:bold;
+/* RESPONSIVE */
+@media(max-width:768px){
+  .table-wrap{display:none;}
+  .mobile{display:block;}
 }
 </style>
 </head>
@@ -104,86 +127,140 @@ button:hover{
 <body>
 
 <div class="header">
-  <h2>Cashier Panel</h2>
-  <span>Kasipag System</span>
+  <h3>Cashier</h3>
+  <a href="index.html" style="color:white;">Logout</a>
 </div>
+
+<div class="container">
 
 <!-- STATS -->
 <div class="stats">
-  <div class="stat">
-    <p id="total">0</p>
-    <small>Payments</small>
-  </div>
-  <div class="stat">
-    <p id="verified">0</p>
-    <small>Verified</small>
-  </div>
-  <div class="stat">
-    <p id="pending">0</p>
-    <small>Pending</small>
-  </div>
+  <div class="card"><h4>Total</h4><p id="total">0</p></div>
+  <div class="card"><h4>Collected</h4><p id="collected">0</p></div>
+  <div class="card"><h4>Verified</h4><p id="verified">0</p></div>
+  <div class="card"><h4>Amount</h4><p id="amount">₱0</p></div>
 </div>
 
-<!-- LIST -->
-<div class="container" id="list"></div>
+<!-- FILTER -->
+<div class="filters">
+  <input id="search" placeholder="Search">
+  <select id="filter">
+    <option value="all">All</option>
+    <option value="Collected">Collected</option>
+    <option value="Verified">Verified</option>
+  </select>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Name</th>
+<th>Amount</th>
+<th>Rider</th>
+<th>Date</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+</div>
+
+<!-- MOBILE VIEW -->
+<div class="mobile" id="mobile"></div>
+
+</div>
 
 <script>
 
-// GET ALL DATA FROM ADMIN/RIDER
-function getData(){
-  return JSON.parse(localStorage.getItem("loans")) || [];
+let loans = JSON.parse(localStorage.getItem("loans")) || [];
+
+// GENERATE REF
+function ref(){
+  return "KS-" + Math.floor(Math.random()*100000);
 }
 
 // RENDER
 function render(){
-  let list = document.getElementById("list");
-  let data = getData();
+  let table = document.getElementById("table");
+  let mobile = document.getElementById("mobile");
 
-  list.innerHTML = "";
+  table.innerHTML="";
+  mobile.innerHTML="";
 
-  let total = data.length;
-  let verified = data.filter(d => d.status === "verified").length;
-  let pending = data.filter(d => d.status === "paid").length;
+  let total=loans.length;
+  let collected=0;
+  let verified=0;
+  let amount=0;
 
-  document.getElementById("total").innerText = total;
-  document.getElementById("verified").innerText = verified;
-  document.getElementById("pending").innerText = pending;
+  let search=document.getElementById("search").value.toLowerCase();
+  let filter=document.getElementById("filter").value;
 
-  data.forEach((d,i)=>{
+  loans.forEach((l,i)=>{
 
-    list.innerHTML += `
-      <div class="card">
-        <h3>${d.leader}</h3>
-        <small>₱${d.amount} | ${d.rider}</small>
+    if(search && !l.leader.toLowerCase().includes(search)) return;
+    if(filter!="all" && l.status!=filter) return;
 
-        <div class="row">
-          <span class="status ${d.status}">
-            ${d.status}
-          </span>
-        </div>
+    if(!l.ref) l.ref=ref();
+    if(l.status=="Collected" && !l.date){
+      l.date=new Date().toLocaleDateString();
+    }
 
-        <button onclick="verify(${d.id})">
-          Mark as Verified
-        </button>
-      </div>
+    if(l.status=="Collected") collected++;
+    if(l.status=="Verified"){
+      verified++;
+      amount+=Number(l.amount);
+    }
+
+    // DESKTOP
+    table.innerHTML+=`
+    <tr>
+      <td>${l.ref}</td>
+      <td>${l.leader}</td>
+      <td>₱${l.amount}</td>
+      <td>${l.rider}</td>
+      <td>${l.date||"-"}</td>
+      <td><span class="status ${l.status.toLowerCase()}">${l.status}</span></td>
+      <td>
+        ${l.status=="Collected" ? `<button onclick="verify(${i})">Verify</button>` : "✔"}
+      </td>
+    </tr>
+    `;
+
+    // MOBILE
+    mobile.innerHTML+=`
+    <div class="item">
+      <strong>${l.leader}</strong><br>
+      ₱${l.amount}<br>
+      ${l.rider}<br>
+      <small>${l.date||""}</small><br>
+      <span class="status ${l.status.toLowerCase()}">${l.status}</span><br>
+      ${l.status=="Collected" ? `<button onclick="verify(${i})">Verify</button>` : ""}
+    </div>
     `;
   });
+
+  document.getElementById("total").innerText=total;
+  document.getElementById("collected").innerText=collected;
+  document.getElementById("verified").innerText=verified;
+  document.getElementById("amount").innerText="₱"+amount;
+
+  localStorage.setItem("loans",JSON.stringify(loans));
 }
 
-// VERIFY PAYMENT
-function verify(id){
-  let data = getData();
-
-  data = data.map(d=>{
-    if(d.id === id){
-      d.status = "verified";
-    }
-    return d;
-  });
-
-  localStorage.setItem("loans", JSON.stringify(data));
+// VERIFY
+function verify(i){
+  loans[i].status="Verified";
+  localStorage.setItem("loans",JSON.stringify(loans));
   render();
 }
+
+// EVENTS
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("filter").addEventListener("change",render);
 
 // INIT
 render();

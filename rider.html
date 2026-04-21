@@ -289,7 +289,7 @@ function render(){
 
 /* ACTIONS */
 function collect(i){
-  loans[i].status = "Paid";
+  loans[i].status = "Collected"; // 🔥 hindi na "Paid"
   localStorage.setItem("loans", JSON.stringify(loans));
   render();
 }

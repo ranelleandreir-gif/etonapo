@@ -1,82 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Kasipag Admin Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasipag Admin System</title>
 
 <style>
+:root{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --border:rgba(255,255,255,0.08);
+  --blue:#06b6d4;
+  --green:#22c55e;
+  --yellow:#f59e0b;
+  --red:#ef4444;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
 
 body{
   display:flex;
-  background:#0f172a;
+  background:var(--bg);
   color:white;
 }
 
 /* SIDEBAR */
 .sidebar{
   width:240px;
-  height:100vh;
+  min-height:100vh;
   background:#020617;
   padding:20px;
+  border-right:1px solid var(--border);
 }
 
-.sidebar h2{
-  color:#06b6d4;
-  margin-bottom:30px;
-}
+.sidebar h2{color:var(--blue);margin-bottom:20px;}
 
 .sidebar a{
   display:block;
-  padding:12px;
-  margin-bottom:10px;
-  border-radius:10px;
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:8px;
   cursor:pointer;
 }
 
-.sidebar a:hover{
-  background:#06b6d4;
-}
+.sidebar a:hover{background:var(--blue);}
 
 /* MAIN */
-.main{
-  flex:1;
-  padding:30px;
-}
+.main{flex:1;padding:20px;}
 
-/* TOPBAR */
+/* TOP */
 .topbar{
   display:flex;
   justify-content:space-between;
-  margin-bottom:20px;
+  align-items:center;
 }
 
-/* CARDS */
+/* DASH CARDS */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+  margin-top:15px;
 }
 
 .card{
-  background:#1e293b;
-  padding:20px;
-  border-radius:15px;
+  background:var(--card);
+  padding:15px;
+  border-radius:12px;
+  border:1px solid var(--border);
 }
 
-.card p{
-  font-size:24px;
-  font-weight:bold;
-}
+.card p{font-size:22px;font-weight:bold;}
 
 /* FORM */
 .form{
-  margin:20px 0;
+  margin:15px 0;
   display:flex;
   flex-wrap:wrap;
-  gap:10px;
+  gap:8px;
 }
 
-.form input, .form select{
+input,select{
   padding:10px;
   border-radius:8px;
   border:none;
@@ -84,41 +88,64 @@ body{
   color:white;
 }
 
-/* BUTTON */
 button{
-  padding:10px 20px;
-  background:#06b6d4;
+  padding:10px 12px;
   border:none;
   border-radius:8px;
+  background:var(--blue);
   cursor:pointer;
 }
 
 /* TABLE */
 table{
   width:100%;
-  margin-top:20px;
+  margin-top:15px;
   border-collapse:collapse;
   background:#020617;
 }
 
-th, td{
-  padding:12px;
+th,td{
+  padding:10px;
+  border-bottom:1px solid var(--border);
 }
 
-th{
-  background:#1e293b;
-}
+th{background:#1e293b;font-size:12px;color:gray;}
 
 /* STATUS */
 .status{
-  padding:5px 10px;
-  border-radius:10px;
+  padding:4px 8px;
+  border-radius:8px;
   font-size:12px;
 }
 
-.pending{background:#f59e0b;}
-.paid{background:#22c55e;}
-.assigned{background:#3b82f6;}
+.pending{background:var(--yellow);}
+.collected{background:#3b82f6;}
+.verified{background:var(--green);}
+.notverified{background:var(--red);}
+
+/* BUTTONS */
+.btn-edit{background:#3b82f6;}
+.btn-del{background:var(--red);}
+.btn-save{background:var(--green);}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-content{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  width:300px;
+}
 
 .hidden{display:none;}
 </style>
@@ -126,10 +153,13 @@ th{
 
 <body>
 
+<!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>Kasipag</h2>
+  <h2>Kasipag Admin</h2>
   <a onclick="show('dash')">📊 Dashboard</a>
-  <a onclick="show('loan')">💰 Loan</a>
+  <a onclick="show('loan')">💰 Loans</a>
+  <a onclick="show('paid')">📁 Paid Borrowers</a>
+  <a onclick="show('unpaid')">📁 Unpaid Borrowers</a>
 </div>
 
 <div class="main">
@@ -137,144 +167,186 @@ th{
 <!-- DASHBOARD -->
 <div id="dash">
   <div class="topbar">
-    <h1>Admin Dashboard</h1>
+    <h2>Dashboard</h2>
   </div>
 
   <div class="grid">
-    <div class="card"><h3>Total Loans</h3><p id="total">0</p></div>
-    <div class="card"><h3>Borrowers</h3><p id="borrowers">0</p></div>
-    <div class="card"><h3>Pending</h3><p id="pending">0</p></div>
-  </div>
-
-  <h2 style="margin-top:20px;">Rider Status</h2>
-  <div class="grid">
-    <div class="card">Rider 1: <span id="r1">0</span> loans</div>
-    <div class="card">Rider 2: <span id="r2">0</span> loans</div>
-    <div class="card">Rider 3: <span id="r3">0</span> loans</div>
+    <div class="card"><h4>Total Loans</h4><p id="total">0</p></div>
+    <div class="card"><h4>Verified</h4><p id="verified">0</p></div>
+    <div class="card"><h4>Not Verified</h4><p id="notverified">0</p></div>
+    <div class="card"><h4>Pending</h4><p id="pending">0</p></div>
   </div>
 </div>
 
 <!-- LOANS -->
 <div id="loan" class="hidden">
 
-  <h1>Loan Management</h1>
+<h2>Loan Management</h2>
 
-  <div class="form">
-    <input id="leader" placeholder="Borrower Name">
-    <input id="members" placeholder="Members (optional)">
-    <input id="amount" type="number" placeholder="Amount">
+<div class="form">
+  <input id="leader" placeholder="Borrower">
+  <input id="amount" type="number" placeholder="Amount">
 
-    <select id="type">
-      <option>Solo</option>
-      <option>Group</option>
-    </select>
+  <select id="type">
+    <option>Solo</option>
+    <option>Group</option>
+  </select>
 
-    <select id="rider">
-      <option>Rider 1</option>
-      <option>Rider 2</option>
-      <option>Rider 3</option>
-    </select>
+  <select id="rider">
+    <option>Rider 1</option>
+    <option>Rider 2</option>
+    <option>Rider 3</option>
+  </select>
 
-    <button onclick="addLoan()">Add Loan</button>
-  </div>
+  <button onclick="addLoan()">Add</button>
+</div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Type</th>
-        <th>Rider</th>
-        <th>Status</th>
-      </tr>
-    </thead>
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Amount</th>
+  <th>Rider</th>
+  <th>Status</th>
+  <th>Action</th>
+</tr>
+</thead>
 
-    <tbody id="table"></tbody>
-  </table>
+<tbody id="table"></tbody>
+</table>
 
 </div>
 
+<!-- PAID -->
+<div id="paid" class="hidden">
+<h2>Paid Borrowers</h2>
+<div id="paidList"></div>
+</div>
+
+<!-- UNPAID -->
+<div id="unpaid" class="hidden">
+<h2>Unpaid Borrowers</h2>
+<div id="unpaidList"></div>
+</div>
+
+</div>
+
+<!-- MODAL EDIT -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3>Edit Loan</h3>
+
+    <input id="editName">
+    <input id="editAmount" type="number">
+
+    <select id="editStatus">
+      <option>Pending</option>
+      <option>Collected</option>
+      <option>Verified</option>
+      <option>Not Verified</option>
+    </select>
+
+    <button class="btn-save" onclick="saveEdit()">Save</button>
+  </div>
 </div>
 
 <script>
 
-/* SWITCH PAGE */
+let loans = JSON.parse(localStorage.getItem("loans")) || [];
+let editIndex = null;
+
+/* NAV */
 function show(id){
-  document.getElementById("dash").classList.add("hidden");
-  document.getElementById("loan").classList.add("hidden");
+  ["dash","loan","paid","unpaid"].forEach(x=>{
+    document.getElementById(x).classList.add("hidden");
+  });
   document.getElementById(id).classList.remove("hidden");
 }
 
-/* STORAGE */
-let loans = JSON.parse(localStorage.getItem("loans")) || [];
-
-/* ADD LOAN */
+/* ADD */
 function addLoan(){
-  let leader = leaderInput.value;
-  let members = membersInput.value;
-  let amount = amountInput.value;
-  let type = typeInput.value;
-  let rider = riderInput.value;
-
-  if(!leader || !amount){
-    alert("Fill required");
-    return;
-  }
-
   loans.push({
-    leader, members, amount, type, rider, status:"Pending"
+    leader:leader.value,
+    amount:amount.value,
+    rider:rider.value,
+    type:type.value,
+    status:"Pending"
   });
 
-  localStorage.setItem("loans", JSON.stringify(loans));
-
+  localStorage.setItem("loans",JSON.stringify(loans));
   render();
 }
 
-/* RENDER TABLE + DASHBOARD */
-function render(){
-  let table = document.getElementById("table");
-  table.innerHTML = "";
+/* EDIT */
+function edit(i){
+  editIndex=i;
+  modal.style.display="flex";
 
-  let total = loans.length;
-  let borrowers = new Set();
-  let pending = 0;
-
-  let r1=0,r2=0,r3=0;
-
-  loans.forEach(l => {
-    borrowers.add(l.leader);
-    if(l.status==="Pending") pending++;
-
-    if(l.rider==="Rider 1") r1++;
-    if(l.rider==="Rider 2") r2++;
-    if(l.rider==="Rider 3") r3++;
-
-    table.innerHTML += `
-      <tr>
-        <td>${l.leader}</td>
-        <td>₱${l.amount}</td>
-        <td>${l.type}</td>
-        <td>${l.rider}</td>
-        <td><span class="status pending">${l.status}</span></td>
-      </tr>
-    `;
-  });
-
-  document.getElementById("total").innerText = total;
-  document.getElementById("borrowers").innerText = borrowers.size;
-  document.getElementById("pending").innerText = pending;
-
-  document.getElementById("r1").innerText = r1;
-  document.getElementById("r2").innerText = r2;
-  document.getElementById("r3").innerText = r3;
+  editName.value=loans[i].leader;
+  editAmount.value=loans[i].amount;
+  editStatus.value=loans[i].status;
 }
 
-/* INPUT SHORTCUTS */
-const leaderInput = document.getElementById("leader");
-const membersInput = document.getElementById("members");
-const amountInput = document.getElementById("amount");
-const typeInput = document.getElementById("type");
-const riderInput = document.getElementById("rider");
+function saveEdit(){
+  loans[editIndex].leader=editName.value;
+  loans[editIndex].amount=editAmount.value;
+  loans[editIndex].status=editStatus.value;
+
+  localStorage.setItem("loans",JSON.stringify(loans));
+  modal.style.display="none";
+  render();
+}
+
+/* RENDER */
+function render(){
+
+let t=0,v=0,nv=0,p=0;
+
+table.innerHTML="";
+paidList.innerHTML="";
+unpaidList.innerHTML="";
+
+loans.forEach((l,i)=>{
+
+t++;
+
+if(l.status=="Verified") v++;
+if(l.status=="Not Verified") nv++;
+if(l.status=="Pending") p++;
+
+table.innerHTML+=`
+<tr>
+<td>${l.leader}</td>
+<td>₱${l.amount}</td>
+<td>${l.rider}</td>
+<td><span class="status ${l.status.toLowerCase().replace(" ","")}">${l.status}</span></td>
+<td>
+<button class="btn-edit" onclick="edit(${i})">Edit</button>
+</td>
+</tr>
+`;
+
+// PAID / UNPAID FOLDERS
+if(l.status=="Verified"){
+paidList.innerHTML+=`<div class="card">${l.leader} - ₱${l.amount}</div>`;
+}else{
+unpaidList.innerHTML+=`<div class="card">${l.leader} - ₱${l.amount}</div>`;
+}
+
+});
+
+total.innerText=t;
+verified.innerText=v;
+notverified.innerText=nv;
+pending.innerText=p;
+
+localStorage.setItem("loans",JSON.stringify(loans));
+}
+
+/* CLOSE MODAL */
+window.onclick=(e)=>{
+if(e.target==modal) modal.style.display="none";
+}
 
 /* INIT */
 render();
