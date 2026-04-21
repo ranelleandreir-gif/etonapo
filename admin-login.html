@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kasipag Elite Admin</title>
 
 <style>
+:root{
+  --bg:#050b18;
+  --card:#0f172a;
+  --accent:#06b6d4;
+  --text:#e5e7eb;
+  --danger:#ef4444;
+  --success:#22c55e;
+}
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Segoe UI', sans-serif;
+  font-family:Segoe UI;
 }
 
 body{
@@ -18,48 +28,85 @@ body{
   justify-content:center;
   align-items:center;
   background:radial-gradient(circle at top,#0f172a,#020617);
-  color:white;
+  color:var(--text);
+  overflow:hidden;
 }
 
-/* 🔥 LOGIN BOX */
-.login-box{
+/* 🔥 BACKGROUND GLOW */
+.bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+.glow{
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:0.3;
+  animation:float 8s infinite alternate;
+}
+
+.g1{background:#06b6d4;top:10%;left:10%;}
+.g2{background:#3b82f6;bottom:10%;right:10%;}
+
+@keyframes float{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
+
+/* LOGIN BOX */
+.box{
   width:360px;
-  padding:40px;
-  border-radius:20px;
-  background:rgba(15,23,42,0.95);
+  padding:35px;
+  border-radius:18px;
+  background:rgba(15,23,42,0.9);
   border:1px solid rgba(6,182,212,0.2);
-  box-shadow:0 0 60px rgba(6,182,212,0.2);
+  box-shadow:0 0 40px rgba(6,182,212,0.15);
   text-align:center;
+  backdrop-filter:blur(10px);
+  animation:fade 0.8s ease-in-out;
 }
 
-/* LOGO */
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
 .logo{
-  width:65px;
-  margin-bottom:15px;
+  width:60px;
+  margin-bottom:10px;
 }
 
-/* TITLE */
 h2{
+  font-size:18px;
   margin-bottom:5px;
 }
 
-.secure{
-  font-size:12px;
+.sub{
+  font-size:11px;
   color:#38bdf8;
+  opacity:0.7;
   margin-bottom:20px;
-  opacity:0.8;
 }
 
 /* INPUT */
 input{
   width:100%;
   padding:12px;
-  margin:10px 0;
+  margin:8px 0;
   border-radius:10px;
-  border:none;
+  border:1px solid rgba(255,255,255,0.1);
   background:#020617;
   color:white;
-  border:1px solid rgba(255,255,255,0.1);
+  outline:none;
+}
+
+input:focus{
+  border-color:var(--accent);
 }
 
 /* BUTTON */
@@ -69,21 +116,31 @@ button{
   margin-top:10px;
   border:none;
   border-radius:10px;
-  background:#06b6d4;
+  background:var(--accent);
   color:white;
-  font-weight:bold;
+  font-weight:600;
   cursor:pointer;
-  transition:0.3s;
+  transition:.3s;
 }
 
 button:hover{
-  box-shadow:0 0 20px #06b6d4;
+  transform:scale(1.03);
+  box-shadow:0 0 15px rgba(6,182,212,0.4);
+}
+
+/* LOADER */
+.loader{
+  height:3px;
+  width:0%;
+  background:var(--accent);
+  margin-top:10px;
+  transition:0.5s;
 }
 
 /* MESSAGE */
 #msg{
   margin-top:10px;
-  font-size:13px;
+  font-size:12px;
 }
 
 /* SHAKE */
@@ -93,66 +150,83 @@ button:hover{
 
 @keyframes shake{
   0%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  50%{transform:translateX(6px);}
-  75%{transform:translateX(-6px);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  75%{transform:translateX(-5px);}
   100%{transform:translateX(0);}
 }
 
-/* LOADING BAR */
-.load{
-  height:4px;
-  background:#06b6d4;
-  width:0%;
-  margin-top:10px;
-  transition:0.4s;
+/* MOBILE */
+@media(max-width:480px){
+  .box{
+    width:90%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-box" id="box">
+<!-- BACKGROUND -->
+<div class="bg">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+</div>
+
+<!-- LOGIN BOX -->
+<div class="box" id="box">
+
   <img src="kasipag.png" class="logo">
 
-  <h2>KASIPAG MICROFINANCING ADMIN</h2>
-  <div class="secure">🔐 AUTHORIZED PERSONNEL ONLY</div>
+  <h2>ELITE ADMIN ACCESS</h2>
+  <div class="sub">SECURE SYSTEM AUTHENTICATION</div>
 
-  <input type="text" id="user" placeholder="Username">
-  <input type="password" id="pass" placeholder="Password">
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
 
-  <button onclick="adminLogin()">LOGIN</button>
+  <button onclick="login()">LOGIN</button>
 
-  <div class="load" id="load"></div>
+  <div class="loader" id="loader"></div>
   <p id="msg"></p>
+
 </div>
 
 <script>
-function adminLogin(){
-  const u = document.getElementById("user").value;
-  const p = document.getElementById("pass").value;
-  const msg = document.getElementById("msg");
-  const box = document.getElementById("box");
-  const load = document.getElementById("load");
 
-  load.style.width = "100%";
-  msg.innerHTML = "Verifying credentials...";
+function login(){
+
+  let u = document.getElementById("user").value;
+  let p = document.getElementById("pass").value;
+  let msg = document.getElementById("msg");
+  let box = document.getElementById("box");
+  let loader = document.getElementById("loader");
+
+  loader.style.width = "100%";
+  msg.innerHTML = "Authenticating...";
 
   setTimeout(()=>{
-    // 🔐 DEMO ACCOUNT
+
     if(u === "admin" && p === "kasipag123"){
       msg.style.color = "#22c55e";
       msg.innerHTML = "Access Granted ✔";
       window.location.href = "admin.html";
-    } else {
+    } 
+    else {
       msg.style.color = "#ef4444";
-      msg.innerHTML = "Access Denied ✖";
+      msg.innerHTML = "Invalid Credentials";
       box.classList.add("shake");
-      setTimeout(()=>box.classList.remove("shake"),300);
-      load.style.width = "0%";
+
+      setTimeout(()=>{
+        box.classList.remove("shake");
+      },300);
+
+      loader.style.width = "0%";
     }
-  },1500);
+
+  },1200);
+
 }
+
 </script>
 
 </body>

@@ -3,44 +3,78 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kasipag Rider</title>
+<title>Kasipag Rider Pro</title>
 
 <style>
 :root{
   --bg:#0b1220;
   --card:#111a2e;
-  --muted:#9aa4b2;
+  --glass:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.08);
   --primary:#06b6d4;
   --success:#22c55e;
-  --warning:#f59e0b;
-  --danger:#ef4444;
-  --border:rgba(255,255,255,.08);
+  --text:#e5e7eb;
+  --muted:#94a3b8;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI, system-ui, -apple-system;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
 
 body{
   background:linear-gradient(135deg,#020617,#0f172a);
-  color:#e5e7eb;
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* ANIMATED BACKGROUND */
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+}
+
+.blob{
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:.35;
+  animation:float 8s infinite alternate;
+}
+
+.b1{background:#06b6d4;top:10%;left:10%;}
+.b2{background:#3b82f6;bottom:10%;right:10%;}
+.b3{background:#22c55e;top:40%;left:50%;}
+
+@keyframes float{
+  from{transform:translateY(0)}
+  to{transform:translateY(40px)}
 }
 
 /* HEADER */
-.header{
-  position:sticky; top:0;
-  display:flex; align-items:center; justify-content:space-between;
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   padding:14px 16px;
-  background:rgba(2,6,23,.8);
-  backdrop-filter: blur(8px);
+  position:sticky;
+  top:0;
+  backdrop-filter:blur(12px);
+  background:rgba(2,6,23,.7);
   border-bottom:1px solid var(--border);
 }
 
 .title{
-  font-weight:600; letter-spacing:.5px;
+  font-weight:600;
 }
 
 .badge{
-  font-size:12px; padding:6px 10px; border-radius:999px;
-  background:rgba(6,182,212,.15); color:#67e8f9;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(6,182,212,.15);
+  color:#67e8f9;
 }
 
 /* CONTAINER */
@@ -50,266 +84,278 @@ body{
   padding:16px;
 }
 
-/* STATS */
-.stats{
+/* CARDS */
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:12px;
-  margin-bottom:16px;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;
+  margin:14px 0;
 }
 
 .card{
-  background:var(--card);
+  background:var(--glass);
   border:1px solid var(--border);
+  padding:14px;
   border-radius:14px;
-  padding:16px;
 }
 
-.card h4{font-size:13px;color:var(--muted);margin-bottom:6px;}
-.card p{font-size:22px;font-weight:600;}
+.card h4{
+  font-size:12px;
+  color:var(--muted);
+}
 
-/* FILTER BAR */
+.card p{
+  font-size:22px;
+  font-weight:600;
+}
+
+/* FILTER */
 .filters{
-  display:flex; gap:8px; flex-wrap:wrap;
-  margin-bottom:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
 }
 
-.filters input, .filters select{
+input,select{
   padding:10px;
   border-radius:10px;
   border:1px solid var(--border);
   background:#020617;
-  color:#e5e7eb;
+  color:white;
 }
 
-/* TABLE (desktop) */
-.table-wrap{
-  overflow:auto;
-  border:1px solid var(--border);
-  border-radius:14px;
-}
-
-table{
+/* TABLE */
+.table{
   width:100%;
   border-collapse:collapse;
-  min-width:640px;
+  overflow:hidden;
+  border-radius:12px;
+  border:1px solid var(--border);
 }
 
 th,td{
   padding:12px;
   border-bottom:1px solid var(--border);
-  text-align:left;
 }
 
 th{
-  font-size:12px; color:var(--muted);
+  text-align:left;
+  font-size:12px;
+  color:var(--muted);
   background:#0b1326;
 }
 
+/* STATUS */
 .status{
   padding:4px 10px;
   border-radius:999px;
   font-size:12px;
 }
-.pending{background:rgba(245,158,11,.15); color:#fbbf24;}
-.paid{background:rgba(34,197,94,.15); color:#4ade80;}
-.assigned{background:rgba(59,130,246,.15); color:#60a5fa;}
 
-/* BUTTONS */
-.btn{
+.pending{background:rgba(245,158,11,.2);color:#fbbf24;}
+.collected{background:rgba(59,130,246,.2);color:#60a5fa;}
+.verified{background:rgba(34,197,94,.2);color:#4ade80;}
+
+/* BUTTON */
+button{
   padding:8px 12px;
-  border:none; border-radius:10px;
-  cursor:pointer; font-weight:600;
-}
-.btn-primary{background:var(--primary); color:#022c33;}
-.btn-success{background:var(--success); color:#022c33;}
-.btn-outline{
-  background:transparent; color:#e5e7eb;
-  border:1px solid var(--border);
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.2s;
 }
 
-/* MOBILE CARDS */
-.mobile-list{display:none; gap:10px;}
+.btn-collect{
+  background:var(--primary);
+  color:#001018;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+/* MOBILE */
+.mobile{
+  display:none;
+}
 
 .item{
-  background:var(--card);
+  background:var(--glass);
   border:1px solid var(--border);
-  border-radius:14px;
   padding:14px;
+  border-radius:14px;
+  margin-bottom:10px;
 }
 
-.item .row{
-  display:flex; justify-content:space-between; margin-bottom:6px;
+.row{
+  display:flex;
+  justify-content:space-between;
+  margin:4px 0;
 }
 
-.small{font-size:12px;color:var(--muted);}
-
-/* FOOTER NAV (mobile feel) */
-.footer{
-  position:sticky; bottom:0;
-  display:flex; gap:8px;
-  padding:10px;
-  background:rgba(2,6,23,.9);
-  border-top:1px solid var(--border);
+.small{
+  font-size:12px;
+  color:var(--muted);
 }
 
-.footer button{flex:1}
-
-/* RESPONSIVE */
 @media(max-width:768px){
-  .table-wrap{display:none;}
-  .mobile-list{display:grid;}
+  table{display:none;}
+  .mobile{display:block;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="title" id="title">Rider</div>
-  <div class="badge" id="roleBadge">RIDER</div>
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
 </div>
+
+<header>
+  <div class="title" id="title">Rider Dashboard</div>
+  <div class="badge" id="badge">RIDER</div>
+</header>
 
 <div class="container">
 
-  <!-- STATS -->
-  <div class="stats">
-    <div class="card"><h4>Assigned</h4><p id="total">0</p></div>
-    <div class="card"><h4>Collected</h4><p id="paid">0</p></div>
-    <div class="card"><h4>Pending</h4><p id="pending">0</p></div>
-  </div>
-
-  <!-- FILTER -->
-  <div class="filters">
-    <input id="search" placeholder="Search borrower..."/>
-    <select id="statusFilter">
-      <option value="all">All Status</option>
-      <option value="Pending">Pending</option>
-      <option value="Paid">Paid</option>
-    </select>
-    <button class="btn btn-outline" onclick="logout()">Logout</button>
-  </div>
-
-  <!-- TABLE (desktop) -->
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Borrower</th>
-          <th>Amount</th>
-          <th>Type</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="table"></tbody>
-    </table>
-  </div>
-
-  <!-- MOBILE CARDS -->
-  <div class="mobile-list" id="mobileList"></div>
-
+<!-- STATS -->
+<div class="grid">
+  <div class="card"><h4>Assigned</h4><p id="total">0</p></div>
+  <div class="card"><h4>Collected</h4><p id="collected">0</p></div>
+  <div class="card"><h4>Pending</h4><p id="pending">0</p></div>
 </div>
 
-<div class="footer">
-  <button class="btn btn-primary" onclick="refresh()">Refresh</button>
-  <button class="btn btn-outline" onclick="scrollTo(0,0)">Top</button>
+<!-- FILTER -->
+<div class="filters">
+  <input id="search" placeholder="Search borrower">
+  <select id="filter">
+    <option value="all">All</option>
+    <option value="Pending">Pending</option>
+    <option value="Collected">Collected</option>
+    <option value="Verified">Verified</option>
+  </select>
+</div>
+
+<!-- TABLE -->
+<table class="table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+<!-- MOBILE -->
+<div class="mobile" id="mobile"></div>
+
 </div>
 
 <script>
-/* ROLE GUARD */
-let role = (localStorage.getItem("role") || "").toLowerCase();
-if(!role.includes("rider")){
-  alert("Unauthorized");
-  location.href="index.html";
-}
 
-let riderName = role.replace(/(^|\s)\w/g, s => s.toUpperCase()); // "rider 1" -> "Rider 1"
-document.getElementById("title").innerText = riderName + " Dashboard";
-document.getElementById("roleBadge").innerText = riderName.toUpperCase();
+let role = localStorage.getItem("role") || "rider 1";
+role = role.toLowerCase();
 
-/* DATA */
+document.getElementById("title").innerText = role.toUpperCase();
+document.getElementById("badge").innerText = role.toUpperCase();
+
 let loans = JSON.parse(localStorage.getItem("loans")) || [];
 
 /* RENDER */
 function render(){
   let table = document.getElementById("table");
-  let mobile = document.getElementById("mobileList");
-  table.innerHTML = "";
-  mobile.innerHTML = "";
+  let mobile = document.getElementById("mobile");
 
-  let total=0, paid=0, pending=0;
+  table.innerHTML="";
+  mobile.innerHTML="";
 
-  let q = document.getElementById("search").value.toLowerCase();
-  let f = document.getElementById("statusFilter").value;
+  let total=0,collected=0,pending=0;
 
-  loans.forEach((l, i)=>{
-    if(l.rider !== riderName) return;
+  let search=document.getElementById("search").value.toLowerCase();
+  let filter=document.getElementById("filter").value;
 
-    if(q && !l.leader.toLowerCase().includes(q)) return;
-    if(f !== "all" && l.status !== f) return;
+  loans.forEach((l,i)=>{
+
+    if(l.rider?.toLowerCase() !== role) return;
+
+    if(search && !l.leader.toLowerCase().includes(search)) return;
+    if(filter!=="all" && l.status!==filter) return;
 
     total++;
-    if(l.status==="Paid") paid++; else pending++;
+    if(l.status==="Collected") collected++;
+    if(l.status==="Pending") pending++;
 
-    // DESKTOP ROW
-    table.innerHTML += `
-      <tr>
-        <td>${l.leader}</td>
-        <td>₱${l.amount}</td>
-        <td>${l.type}</td>
-        <td><span class="status ${l.status==="Paid"?"paid":"pending"}">${l.status}</span></td>
-        <td>
-          ${l.status==="Pending"
-            ? `<button class="btn btn-success" onclick="collect(${i})">Collect</button>`
-            : "✔"}
-        </td>
-      </tr>
-    `;
+    table.innerHTML+=`
+    <tr>
+      <td>${l.leader}</td>
+      <td>₱${l.amount}</td>
+      <td><span class="status ${l.status.toLowerCase()}">${l.status}</span></td>
+      <td>
+        ${l.status==="Pending"
+          ? `<button class="btn-collect" onclick="collect(${i})">Collect</button>`
+          : "✔"}
+      </td>
+    </tr>`;
 
-    // MOBILE CARD
-    mobile.innerHTML += `
-      <div class="item">
-        <div class="row"><strong>${l.leader}</strong><span class="status ${l.status==="Paid"?"paid":"pending"}">${l.status}</span></div>
-        <div class="row small"><span>Amount</span><span>₱${l.amount}</span></div>
-        <div class="row small"><span>Type</span><span>${l.type}</span></div>
-        <div class="row" style="margin-top:8px;">
-          ${l.status==="Pending"
-            ? `<button class="btn btn-success" onclick="collect(${i})">Collect</button>`
-            : `<span class="small">Collected ✔</span>`}
-        </div>
-      </div>
-    `;
+    mobile.innerHTML+=`
+    <div class="item">
+      <div class="row"><b>${l.leader}</b><span class="status ${l.status.toLowerCase()}">${l.status}</span></div>
+      <div class="row small">₱${l.amount}</div>
+      ${l.status==="Pending"
+        ? `<button class="btn-collect" onclick="collect(${i})">Collect</button>`
+        : `<div class="small">Done ✔</div>`}
+    </div>`;
   });
 
-  document.getElementById("total").innerText = total;
-  document.getElementById("paid").innerText = paid;
-  document.getElementById("pending").innerText = pending;
+  document.getElementById("total").innerText=total;
+  document.getElementById("collected").innerText=collected;
+  document.getElementById("pending").innerText=pending;
+
+  localStorage.setItem("loans",JSON.stringify(loans));
 }
 
-/* ACTIONS */
+/* COLLECT */
 function collect(i){
-  loans[i].status = "Collected"; // 🔥 hindi na "Paid"
-  localStorage.setItem("loans", JSON.stringify(loans));
+  loans[i].status="Collected";
+  localStorage.setItem("loans",JSON.stringify(loans));
   render();
-}
-
-function refresh(){
-  loans = JSON.parse(localStorage.getItem("loans")) || [];
-  render();
-}
-
-function logout(){
-  localStorage.removeItem("role");
-  location.href="index.html";
 }
 
 /* EVENTS */
-document.getElementById("search").addEventListener("input", render);
-document.getElementById("statusFilter").addEventListener("change", render);
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("filter").addEventListener("change",render);
 
 /* INIT */
 render();
+
+</script>
+
+<!-- LOGOUT BUTTON -->
+<button onclick="logout()" style="
+  padding:10px 14px;
+  border:none;
+  border-radius:10px;
+  background:#ef4444;
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+">
+  🚪 Logout
+</button>
+
+<script>
+function logout(){
+  if(confirm("Are you sure you want to logout?")){
+    localStorage.removeItem("role");
+    window.location.href = "login.html";
+  }
+}
 </script>
 
 </body>

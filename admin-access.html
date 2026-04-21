@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secure Admin Access</title>
 
 <style>
+:root{
+  --bg:#020617;
+  --card:#0f172a;
+  --accent:#06b6d4;
+  --text:#e5e7eb;
+  --danger:#ef4444;
+  --success:#22c55e;
+}
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family:Segoe UI;
 }
 
 body{
@@ -17,77 +27,123 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#020617;
-  color:#fff;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:var(--text);
+  overflow:hidden;
 }
 
-/* 🔐 LOGIN BOX */
-.login-box{
+/* 🔥 BACKGROUND EFFECT */
+.bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+.glow{
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:0.25;
+  animation:float 8s infinite alternate;
+}
+
+.g1{background:#06b6d4;top:10%;left:10%;}
+.g2{background:#3b82f6;bottom:10%;right:10%;}
+
+@keyframes float{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
+
+/* LOGIN BOX */
+.box{
+  width:360px;
+  padding:35px;
+  border-radius:18px;
   background:rgba(15,23,42,0.9);
-  padding:40px;
-  border-radius:20px;
-  width:350px;
-  text-align:center;
   border:1px solid rgba(6,182,212,0.2);
-  box-shadow:0 0 40px rgba(6,182,212,0.2);
+  box-shadow:0 0 50px rgba(6,182,212,0.15);
+  text-align:center;
+  backdrop-filter:blur(10px);
+  animation:fade 0.6s ease-in-out;
 }
 
-/* LOGO */
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
 .logo{
   width:60px;
-  margin-bottom:15px;
-}
-
-/* TITLE */
-h2{
   margin-bottom:10px;
 }
 
-/* SECURITY TEXT */
-.secure-text{
-  font-size:12px;
+h2{
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.secure{
+  font-size:11px;
   color:#38bdf8;
+  opacity:0.7;
   margin-bottom:20px;
-  opacity:0.8;
 }
 
 /* INPUT */
 input{
   width:100%;
   padding:12px;
-  margin-bottom:15px;
+  margin:10px 0;
   border-radius:10px;
-  border:none;
+  border:1px solid rgba(255,255,255,0.1);
   background:#020617;
   color:white;
   outline:none;
-  border:1px solid rgba(255,255,255,0.1);
+}
+
+input:focus{
+  border-color:var(--accent);
 }
 
 /* BUTTON */
 button{
   width:100%;
   padding:12px;
+  margin-top:10px;
   border:none;
   border-radius:10px;
-  background:#06b6d4;
+  background:var(--accent);
   color:white;
-  font-weight:bold;
+  font-weight:600;
   cursor:pointer;
-  transition:0.3s;
+  transition:.2s;
 }
 
 button:hover{
-  box-shadow:0 0 15px #06b6d4;
+  transform:scale(1.03);
+  box-shadow:0 0 15px rgba(6,182,212,0.4);
+}
+
+/* LOADING */
+.loading{
+  height:4px;
+  width:0%;
+  margin-top:10px;
+  background:var(--accent);
+  transition:0.5s;
 }
 
 /* MESSAGE */
 #msg{
   margin-top:10px;
-  font-size:13px;
+  font-size:12px;
 }
 
-/* ERROR SHAKE */
+/* SHAKE */
 .shake{
   animation:shake 0.3s;
 }
@@ -100,58 +156,79 @@ button:hover{
   100%{transform:translateX(0);}
 }
 
-/* LOADING BAR */
-.loading{
-  margin-top:10px;
-  height:5px;
-  background:#06b6d4;
-  width:0%;
-  transition:0.4s;
+/* MOBILE */
+@media(max-width:480px){
+  .box{
+    width:90%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-box" id="box">
+<!-- BACKGROUND -->
+<div class="bg">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+</div>
+
+<!-- LOGIN -->
+<div class="box" id="box">
+
   <img src="kasipag.png" class="logo">
 
-  <h2>ADMIN ACCESS</h2>
-  <div class="secure-text">🔐 SECURE AUTHENTICATION REQUIRED</div>
+  <h2>ADMIN ACCESS GATE</h2>
+  <div class="secure">SECURE SYSTEM AUTHENTICATION</div>
 
   <input type="password" id="accessKey" placeholder="Enter Access Key">
 
-  <button onclick="checkAccess()">VERIFY</button>
+  <button onclick="checkAccess()">VERIFY ACCESS</button>
 
   <div class="loading" id="load"></div>
 
   <p id="msg"></p>
+
 </div>
 
 <script>
+
 function checkAccess(){
+
   const key = document.getElementById("accessKey").value;
   const msg = document.getElementById("msg");
   const box = document.getElementById("box");
   const load = document.getElementById("load");
 
   load.style.width = "100%";
-  msg.innerHTML = "Encrypting credentials...";
+  msg.innerHTML = "Verifying secure token...";
 
   setTimeout(()=>{
-    if(key === "admin123"){ // PALITAN MO TO
+
+    if(key === "admin123"){
       msg.style.color = "#22c55e";
       msg.innerHTML = "Access Granted ✔";
-      window.location.href = "admin-login.html";
+      
+      setTimeout(()=>{
+        window.location.href = "admin-login.html";
+      },800);
+
     } else {
       msg.style.color = "#ef4444";
-      msg.innerHTML = "Access Denied ✖";
+      msg.innerHTML = "Invalid Access Key";
       box.classList.add("shake");
-      setTimeout(()=>box.classList.remove("shake"),300);
+
+      setTimeout(()=>{
+        box.classList.remove("shake");
+      },300);
+
       load.style.width = "0%";
     }
-  },1500);
+
+  },1200);
+
 }
+
 </script>
 
 </body>

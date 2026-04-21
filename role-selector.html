@@ -2,76 +2,151 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kasipag System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasipag Role Selector</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Segoe UI;
+}
 
 body{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg,#0f172a,#020617);
+  background:#0f172a;
   color:white;
+  overflow:hidden;
 }
 
+/* 🔥 ANIMATED BACKGROUND */
+.bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+.circle{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:0.4;
+  animation:move 8s infinite alternate;
+}
+
+.circle1{width:300px;height:300px;background:#06b6d4;top:10%;left:10%;}
+.circle2{width:250px;height:250px;background:#3b82f6;bottom:10%;right:10%;}
+.circle3{width:180px;height:180px;background:#22c55e;top:60%;left:60%;}
+
+@keyframes move{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
+
+/* CONTAINER */
 .container{
   text-align:center;
+  padding:20px;
+  animation:fade 1s ease-in-out;
 }
 
 h1{
-  margin-bottom:20px;
+  margin-bottom:25px;
   font-size:28px;
   color:#06b6d4;
 }
 
+/* GRID */
 .grid{
   display:grid;
-  grid-template-columns:repeat(2, 150px);
+  grid-template-columns:repeat(2,140px);
   gap:15px;
+  justify-content:center;
 }
 
+/* BUTTON CARD */
 button{
-  padding:15px;
+  height:120px;
   border:none;
-  border-radius:12px;
+  border-radius:16px;
   background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
   color:white;
+  font-size:14px;
   cursor:pointer;
   transition:.3s;
-  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+}
+
+/* ICON STYLE TEXT */
+button::before{
+  content:"";
+  display:block;
+  font-size:24px;
+  margin-bottom:8px;
 }
 
 button:hover{
-  background:#06b6d4;
   transform:scale(1.05);
+  background:#06b6d4;
+  box-shadow:0 0 20px rgba(6,182,212,0.4);
+}
+
+/* RESPONSIVE MOBILE */
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:repeat(2,120px);
+  }
+
+  button{
+    height:100px;
+  }
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>Kasipag System</h1>
-
-  <div class="grid">
-    <button onclick="setRole('admin')">Admin</button>
-    <button onclick="setRole('cashier')">Cashier</button>
-    <button onclick="setRole('rider 1')">Rider 1</button>
-    <button onclick="setRole('rider 2')">Rider 2</button>
-    <button onclick="setRole('rider 3')">Rider 3</button>
-  </div>
+<!-- BACKGROUND -->
+<div class="bg">
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+  <div class="circle circle3"></div>
 </div>
 
+<div class="container">
 
+  <h1>Kasipag System Access</h1>
+
+  <div class="grid">
+
+    <button onclick="setRole('admin')">👨‍💼 Admin</button>
+    <button onclick="setRole('cashier')">💰 Cashier</button>
+    <button onclick="setRole('rider 1')">🛵 Rider 1</button>
+    <button onclick="setRole('rider 2')">🛵 Rider 2</button>
+    <button onclick="setRole('rider 3')">🛵 Rider 3</button>
+
+  </div>
+
+</div>
 
 <script>
+
 function setRole(role){
 
   localStorage.setItem("role", role);
 
-  // 🔥 ADMIN goes to access control first
+  // ADMIN SPECIAL ROUTE
   if(role === "admin"){
     window.location.href = "admin-access.html";
   } 
@@ -80,6 +155,8 @@ function setRole(role){
   }
 
 }
+
 </script>
+
 </body>
 </html>

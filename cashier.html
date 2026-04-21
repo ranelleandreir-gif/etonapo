@@ -3,72 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cashier Ledger</title>
+<title>Kasipag Cashier Ledger Pro</title>
 
 <style>
 :root{
-  --bg:#0f172a;
-  --card:#1e293b;
+  --bg:#0b1220;
+  --card:rgba(255,255,255,0.05);
   --border:rgba(255,255,255,0.1);
   --primary:#06b6d4;
-  --success:#22c55e;
+  --green:#22c55e;
   --blue:#3b82f6;
+  --yellow:#f59e0b;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Segoe UI;
+}
 
-body{background:var(--bg);color:white;}
+body{
+  background:var(--bg);
+  color:white;
+  overflow-x:hidden;
+}
+
+/* 🔥 FLOATING BACKGROUND WIDGETS */
+.bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+.circle{
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:0.3;
+  animation:float 8s infinite alternate;
+}
+
+.c1{background:#06b6d4;top:10%;left:10%;}
+.c2{background:#3b82f6;bottom:10%;right:10%;}
+.c3{background:#22c55e;top:50%;left:60%;}
+
+@keyframes float{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
 
 /* HEADER */
 .header{
-  padding:15px;
-  background:#020617;
   display:flex;
   justify-content:space-between;
+  padding:15px 20px;
+  background:rgba(2,6,23,0.7);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
 }
 
-/* CONTAINER */
-.container{padding:15px;}
-
-/* STATS */
-.stats{
+/* KPI WIDGETS */
+.kpi{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   gap:10px;
-  margin-bottom:15px;
+  padding:15px;
 }
 
 .card{
   background:var(--card);
-  padding:12px;
-  border-radius:12px;
   border:1px solid var(--border);
+  padding:15px;
+  border-radius:16px;
+  backdrop-filter:blur(10px);
+  transition:.3s;
 }
 
-.card h4{font-size:12px;color:gray;}
-.card p{font-size:18px;font-weight:bold;}
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card h4{
+  font-size:12px;
+  opacity:.7;
+}
+
+.card p{
+  font-size:20px;
+  font-weight:bold;
+}
 
 /* FILTER */
 .filters{
   display:flex;
   gap:10px;
-  margin-bottom:10px;
+  padding:0 15px 15px;
   flex-wrap:wrap;
 }
 
-.filters input, .filters select{
-  padding:8px;
-  border-radius:8px;
+input,select{
+  padding:10px;
+  border-radius:10px;
   border:none;
   background:#020617;
   color:white;
 }
 
-/* TABLE (DESKTOP) */
-.table-wrap{
+/* TABLE */
+.table{
+  margin:15px;
+  border-radius:12px;
+  overflow:hidden;
   border:1px solid var(--border);
-  border-radius:10px;
-  overflow:auto;
 }
 
 table{
@@ -76,24 +126,16 @@ table{
   border-collapse:collapse;
 }
 
-th,td{
+th{
+  background:#020617;
+  padding:10px;
+  font-size:12px;
+  color:gray;
+}
+
+td{
   padding:10px;
   border-bottom:1px solid var(--border);
-}
-
-th{background:#020617;color:gray;font-size:12px;}
-
-/* MOBILE CARDS */
-.mobile{
-  display:none;
-}
-
-.item{
-  background:var(--card);
-  padding:12px;
-  border-radius:12px;
-  margin-bottom:10px;
-  border:1px solid var(--border);
 }
 
 /* STATUS */
@@ -104,7 +146,7 @@ th{background:#020617;color:gray;font-size:12px;}
 }
 
 .collected{background:var(--blue);}
-.verified{background:var(--success);}
+.verified{background:var(--green);}
 
 /* BUTTON */
 button{
@@ -113,12 +155,31 @@ button{
   border-radius:8px;
   background:var(--primary);
   cursor:pointer;
-  margin-top:5px;
+  transition:.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+/* MOBILE */
+.mobile{
+  display:none;
+  padding:15px;
+}
+
+.item{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+  backdrop-filter:blur(10px);
 }
 
 /* RESPONSIVE */
 @media(max-width:768px){
-  .table-wrap{display:none;}
+  table{display:none;}
   .mobile{display:block;}
 }
 </style>
@@ -126,24 +187,30 @@ button{
 
 <body>
 
-<div class="header">
-  <h3>Cashier</h3>
-  <a href="index.html" style="color:white;">Logout</a>
+<!-- BACKGROUND -->
+<div class="bg">
+  <div class="circle c1"></div>
+  <div class="circle c2"></div>
+  <div class="circle c3"></div>
 </div>
 
-<div class="container">
+<!-- HEADER -->
+<div class="header">
+  <h3>💼 Cashier Ledger</h3>
+  <small>Kasipag Finance System</small>
+</div>
 
-<!-- STATS -->
-<div class="stats">
+<!-- KPI WIDGETS -->
+<div class="kpi">
   <div class="card"><h4>Total</h4><p id="total">0</p></div>
   <div class="card"><h4>Collected</h4><p id="collected">0</p></div>
   <div class="card"><h4>Verified</h4><p id="verified">0</p></div>
-  <div class="card"><h4>Amount</h4><p id="amount">₱0</p></div>
+  <div class="card"><h4>Revenue</h4><p id="amount">₱0</p></div>
 </div>
 
 <!-- FILTER -->
 <div class="filters">
-  <input id="search" placeholder="Search">
+  <input id="search" placeholder="Search borrower">
   <select id="filter">
     <option value="all">All</option>
     <option value="Collected">Collected</option>
@@ -152,7 +219,7 @@ button{
 </div>
 
 <!-- TABLE -->
-<div class="table-wrap">
+<div class="table">
 <table>
 <thead>
 <tr>
@@ -169,103 +236,120 @@ button{
 </table>
 </div>
 
-<!-- MOBILE VIEW -->
+<!-- MOBILE -->
 <div class="mobile" id="mobile"></div>
-
-</div>
 
 <script>
 
 let loans = JSON.parse(localStorage.getItem("loans")) || [];
 
-// GENERATE REF
+/* REF */
 function ref(){
-  return "KS-" + Math.floor(Math.random()*100000);
+  return "KS-" + Math.floor(Math.random()*999999);
 }
 
-// RENDER
+/* RENDER */
 function render(){
-  let table = document.getElementById("table");
-  let mobile = document.getElementById("mobile");
 
-  table.innerHTML="";
-  mobile.innerHTML="";
+let table=document.getElementById("table");
+let mobile=document.getElementById("mobile");
 
-  let total=loans.length;
-  let collected=0;
-  let verified=0;
-  let amount=0;
+table.innerHTML="";
+mobile.innerHTML="";
 
-  let search=document.getElementById("search").value.toLowerCase();
-  let filter=document.getElementById("filter").value;
+let total=0,collected=0,verified=0,amount=0;
 
-  loans.forEach((l,i)=>{
+let search=document.getElementById("search").value.toLowerCase();
+let filter=document.getElementById("filter").value;
 
-    if(search && !l.leader.toLowerCase().includes(search)) return;
-    if(filter!="all" && l.status!=filter) return;
+loans.forEach((l,i)=>{
 
-    if(!l.ref) l.ref=ref();
-    if(l.status=="Collected" && !l.date){
-      l.date=new Date().toLocaleDateString();
-    }
+if(!l.ref) l.ref=ref();
 
-    if(l.status=="Collected") collected++;
-    if(l.status=="Verified"){
-      verified++;
-      amount+=Number(l.amount);
-    }
+if(search && !l.leader.toLowerCase().includes(search)) return;
+if(filter!="all" && l.status!=filter) return;
 
-    // DESKTOP
-    table.innerHTML+=`
-    <tr>
-      <td>${l.ref}</td>
-      <td>${l.leader}</td>
-      <td>₱${l.amount}</td>
-      <td>${l.rider}</td>
-      <td>${l.date||"-"}</td>
-      <td><span class="status ${l.status.toLowerCase()}">${l.status}</span></td>
-      <td>
-        ${l.status=="Collected" ? `<button onclick="verify(${i})">Verify</button>` : "✔"}
-      </td>
-    </tr>
-    `;
+total++;
 
-    // MOBILE
-    mobile.innerHTML+=`
-    <div class="item">
-      <strong>${l.leader}</strong><br>
-      ₱${l.amount}<br>
-      ${l.rider}<br>
-      <small>${l.date||""}</small><br>
-      <span class="status ${l.status.toLowerCase()}">${l.status}</span><br>
-      ${l.status=="Collected" ? `<button onclick="verify(${i})">Verify</button>` : ""}
-    </div>
-    `;
-  });
-
-  document.getElementById("total").innerText=total;
-  document.getElementById("collected").innerText=collected;
-  document.getElementById("verified").innerText=verified;
-  document.getElementById("amount").innerText="₱"+amount;
-
-  localStorage.setItem("loans",JSON.stringify(loans));
+if(l.status=="Collected") collected++;
+if(l.status=="Verified"){
+  verified++;
+  amount+=Number(l.amount);
 }
 
-// VERIFY
+/* TABLE */
+table.innerHTML+=`
+<tr>
+<td>${l.ref}</td>
+<td>${l.leader}</td>
+<td>₱${l.amount}</td>
+<td>${l.rider}</td>
+<td>${l.date||"-"}</td>
+<td><span class="status ${l.status.toLowerCase()}">${l.status}</span></td>
+<td>
+${l.status=="Collected"
+? `<button onclick="verify(${i})">Verify</button>`
+: "✔"}
+</td>
+</tr>`;
+
+/* MOBILE */
+mobile.innerHTML+=`
+<div class="item">
+<b>${l.leader}</b><br>
+₱${l.amount}<br>
+${l.rider}<br>
+<span class="status ${l.status.toLowerCase()}">${l.status}</span><br>
+${l.status=="Collected"
+? `<button onclick="verify(${i})">Verify</button>`
+: ""}
+</div>`;
+});
+
+document.getElementById("total").innerText=total;
+document.getElementById("collected").innerText=collected;
+document.getElementById("verified").innerText=verified;
+document.getElementById("amount").innerText="₱"+amount;
+
+localStorage.setItem("loans",JSON.stringify(loans));
+}
+
+/* VERIFY */
 function verify(i){
   loans[i].status="Verified";
+  loans[i].date=new Date().toLocaleDateString();
   localStorage.setItem("loans",JSON.stringify(loans));
   render();
 }
 
-// EVENTS
-document.getElementById("search").addEventListener("input",render);
-document.getElementById("filter").addEventListener("change",render);
+/* EVENTS */
+search.addEventListener("input",render);
+filter.addEventListener("change",render);
 
-// INIT
+/* INIT */
 render();
 
 </script>
+<!-- LOGOUT BUTTON -->
+<button onclick="logout()" style="
+  padding:10px 14px;
+  border:none;
+  border-radius:10px;
+  background:#ef4444;
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+">
+  🚪 Logout
+</button>
 
+<script>
+function logout(){
+  if(confirm("Are you sure you want to logout?")){
+    localStorage.removeItem("role");
+    window.location.href = "login.html";
+  }
+}
+</script>
 </body>
 </html>
