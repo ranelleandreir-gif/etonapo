@@ -2,242 +2,280 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kasipag Microfinancing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasipag Microfinance</title>
 
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Segoe UI', sans-serif;
+  font-family:Segoe UI;
 }
 
 body{
-  color:white;
   background:#0f172a;
+  color:white;
+  overflow-x:hidden;
 }
 
-/* NAVBAR */
+/* 🔥 ANIMATED BACKGROUND */
+.bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  overflow:hidden;
+}
+
+.circle{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:0.4;
+  animation:move 10s infinite alternate;
+}
+
+.circle1{width:300px;height:300px;background:#06b6d4;top:10%;left:10%;}
+.circle2{width:400px;height:400px;background:#3b82f6;bottom:10%;right:10%;}
+.circle3{width:200px;height:200px;background:#22c55e;top:50%;left:60%;}
+
+@keyframes move{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
+
+/* HEADER */
 header{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  padding:20px 60px;
-  background:rgba(0,0,0,0.5);
+  padding:20px 40px;
+  background:rgba(0,0,0,0.3);
+  backdrop-filter:blur(10px);
   position:sticky;
   top:0;
-  z-index:10;
 }
 
-.logo-area{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.logo{
   font-weight:bold;
-}
-
-.logo-area img{
-  width:40px;
-}
-
-nav a{
-  margin:0 15px;
-  text-decoration:none;
-  color:white;
-  opacity:0.8;
-}
-
-nav a:hover{
   color:#06b6d4;
 }
 
 /* HERO */
 .hero{
-  min-height:90vh;
+  min-height:85vh;
   display:flex;
+  flex-direction:column;
+  justify-content:center;
   align-items:center;
-  justify-content:space-between;
-  padding:80px 60px;
-  background:linear-gradient(to right, #0f172a, #1e3a8a);
+  text-align:center;
+  padding:40px;
 }
 
-.hero-text{
-  max-width:550px;
+.hero h1{
+  font-size:50px;
+  animation:fade 2s ease-in-out;
 }
 
-.hero-text h1{
-  font-size:55px;
-  margin-bottom:20px;
-}
-
-.hero-text p{
-  opacity:0.8;
-  margin-bottom:30px;
-  font-size:18px;
+.hero p{
+  opacity:0.7;
+  margin-top:10px;
 }
 
 /* BUTTON */
 .btn{
-  padding:14px 30px;
+  margin-top:20px;
+  padding:12px 25px;
   border:none;
   border-radius:50px;
   background:#06b6d4;
   color:white;
-  font-size:16px;
   cursor:pointer;
+  transition:.3s;
 }
 
-/* HOW IT WORKS */
-.steps{
-  padding:80px 60px;
-  text-align:center;
-}
-
-.steps h2{
-  margin-bottom:40px;
-}
-
-.step-container{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-}
-
-.step{
-  max-width:200px;
+.btn:hover{
+  transform:scale(1.05);
 }
 
 /* FEATURES */
 .features{
   display:flex;
   justify-content:center;
-  gap:30px;
-  padding:80px 60px;
+  flex-wrap:wrap;
+  gap:20px;
+  padding:60px;
 }
 
 .card{
-  background:#1e293b;
-  padding:30px;
+  width:250px;
+  padding:20px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
   border-radius:15px;
-  width:260px;
+  border:1px solid rgba(255,255,255,0.1);
   text-align:center;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
 }
 
 /* CTA */
 .cta{
   text-align:center;
-  padding:80px;
-  background:#06b6d4;
+  padding:60px;
+  background:linear-gradient(135deg,#06b6d4,#1e3a8a);
 }
 
-.cta h2{
-  margin-bottom:20px;
+/* MODAL */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,0.6);
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:30px;
-  opacity:0.6;
+.modal-box{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  width:300px;
 }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero{
-    flex-direction:column;
-    text-align:center;
-  }
+input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:none;
+  background:#020617;
+  color:white;
+}
 
-  .step-container,
-  .features{
-    flex-direction:column;
-    align-items:center;
-  }
+.close{
+  float:right;
+  cursor:pointer;
+  color:red;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(-20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .hero h1{font-size:32px;}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo-area">
-    <img src="kasipag.png">
-    <span>Kasipag</span>
-  </div>
+<!-- BACKGROUND -->
+<div class="bg">
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+  <div class="circle circle3"></div>
+</div>
 
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Loans</a>
-    <a href="#">About</a>
-    <a href="#">Contact</a>
-  </nav>
+<header>
+  <div class="logo">Kasipag</div>
+  <button class="btn" onclick="openModal()">Add Account</button>
 </header>
 
 <section class="hero">
-  <div class="hero-text">
-    <h1>Fast & Reliable Microfinance</h1>
-    <p>
-      Simplified loan collection and payment system with real-time tracking.
-    </p>
+  <h1>Fast & Smart Microfinance System</h1>
+  <p>Modern loan tracking with real-time processing</p>
 
-    <a href="role-selector.html">
-      <button class="btn">Get Started</button>
-    </a>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="steps">
-  <h2>How It Works</h2>
-
-  <div class="step-container">
-    <div class="step">
-      <h3>1. Apply</h3>
-      <p>Submit your loan or payment request.</p>
-    </div>
-
-    <div class="step">
-      <h3>2. Collect</h3>
-      <p>Rider collects payment from client.</p>
-    </div>
-
-    <div class="step">
-      <h3>3. Confirm</h3>
-      <p>Cashier verifies and updates system.</p>
-    </div>
-  </div>
+  <a href="role-selector.html">
+    <button class="btn">Get Started</button>
+  </a>
 </section>
 
 <section class="features">
 
   <div class="card">
-    <h3>💰 Fast Loans</h3>
-    <p>Approve applications quickly.</p>
+    <h3>💰 Loans</h3>
+    <p>Fast approval system</p>
   </div>
 
   <div class="card">
     <h3>📊 Tracking</h3>
-    <p>Monitor payments in real-time.</p>
+    <p>Real-time updates</p>
   </div>
 
   <div class="card">
     <h3>🔒 Secure</h3>
-    <p>Protected and reliable system.</p>
+    <p>Protected system</p>
   </div>
 
 </section>
 
-<!-- CTA -->
 <section class="cta">
-  <h2>Start Using Kasipag Today</h2>
-  <a href="role-selector.html">
-    <button class="btn">Register Now</button>
-  </a>
+  <h2>Start Using Kasipag Now</h2>
+  <button class="btn" onclick="openModal()">Create Account</button>
 </section>
 
-<footer>
-  <p>© 2026 Kasipag Microfinancing</p>
+<footer style="text-align:center;padding:20px;opacity:0.6;">
+  © 2026 Kasipag System
 </footer>
+
+<!-- 🔥 ADD ACCOUNT MODAL -->
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <span class="close" onclick="closeModal()">✖</span>
+
+    <h3>Create Account</h3>
+
+    <input id="name" placeholder="Full Name">
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button class="btn" onclick="save()">Save</button>
+
+  </div>
+
+</div>
+
+<script>
+
+function openModal(){
+  modal.style.display="flex";
+}
+
+function closeModal(){
+  modal.style.display="none";
+}
+
+function save(){
+
+  let user = {
+    name:name.value,
+    email:email.value,
+    password:password.value
+  };
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users.push(user);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Account Created ✔");
+
+  closeModal();
+}
+
+</script>
 
 </body>
 </html>
