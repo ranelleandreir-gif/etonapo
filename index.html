@@ -19,28 +19,27 @@ body{
   overflow-x:hidden;
 }
 
-/* 🔥 ANIMATED BACKGROUND */
+/* BACKGROUND EFFECT */
 .bg{
   position:fixed;
   width:100%;
   height:100%;
   z-index:-1;
-  overflow:hidden;
 }
 
 .circle{
   position:absolute;
   border-radius:50%;
-  filter:blur(80px);
+  filter:blur(90px);
   opacity:0.4;
-  animation:move 10s infinite alternate;
+  animation:float 8s infinite alternate;
 }
 
 .circle1{width:300px;height:300px;background:#06b6d4;top:10%;left:10%;}
-.circle2{width:400px;height:400px;background:#3b82f6;bottom:10%;right:10%;}
+.circle2{width:350px;height:350px;background:#3b82f6;bottom:10%;right:10%;}
 .circle3{width:200px;height:200px;background:#22c55e;top:50%;left:60%;}
 
-@keyframes move{
+@keyframes float{
   from{transform:translateY(0);}
   to{transform:translateY(40px);}
 }
@@ -49,6 +48,7 @@ body{
 header{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   padding:20px 40px;
   background:rgba(0,0,0,0.3);
   backdrop-filter:blur(10px);
@@ -63,18 +63,17 @@ header{
 
 /* HERO */
 .hero{
-  min-height:85vh;
+  min-height:80vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-  padding:40px;
+  padding:20px;
 }
 
 .hero h1{
-  font-size:50px;
-  animation:fade 2s ease-in-out;
+  font-size:45px;
 }
 
 .hero p{
@@ -85,7 +84,7 @@ header{
 /* BUTTON */
 .btn{
   margin-top:20px;
-  padding:12px 25px;
+  padding:12px 20px;
   border:none;
   border-radius:50px;
   background:#06b6d4;
@@ -104,36 +103,28 @@ header{
   justify-content:center;
   flex-wrap:wrap;
   gap:20px;
-  padding:60px;
+  padding:50px;
 }
 
 .card{
   width:250px;
   padding:20px;
   background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(10px);
   border-radius:15px;
-  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
   text-align:center;
-  transition:.3s;
-}
-
-.card:hover{
-  transform:translateY(-10px);
 }
 
 /* CTA */
 .cta{
   text-align:center;
   padding:60px;
-  background:linear-gradient(135deg,#06b6d4,#1e3a8a);
+  background:#06b6d4;
 }
 
 /* MODAL */
 .modal{
   position:fixed;
-  top:0;
-  left:0;
   width:100%;
   height:100%;
   display:none;
@@ -146,10 +137,10 @@ header{
   background:#1e293b;
   padding:20px;
   border-radius:12px;
-  width:300px;
+  width:320px;
 }
 
-input{
+input,select{
   width:100%;
   padding:10px;
   margin:8px 0;
@@ -165,14 +156,9 @@ input{
   color:red;
 }
 
-@keyframes fade{
-  from{opacity:0;transform:translateY(-20px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* MOBILE */
-@media(max-width:768px){
-  .hero h1{font-size:32px;}
+#msg{
+  font-size:13px;
+  margin-top:8px;
 }
 </style>
 </head>
@@ -188,18 +174,20 @@ input{
 
 <header>
   <div class="logo">Kasipag</div>
-  <button class="btn" onclick="openModal()">Add Account</button>
+  <button class="btn" onclick="openModal()">Create Account</button>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <h1>Fast & Smart Microfinance System</h1>
-  <p>Modern loan tracking with real-time processing</p>
+  <p>Loan tracking + rider + cashier system</p>
 
   <a href="role-selector.html">
     <button class="btn">Get Started</button>
   </a>
 </section>
 
+<!-- FEATURES -->
 <section class="features">
 
   <div class="card">
@@ -209,7 +197,7 @@ input{
 
   <div class="card">
     <h3>📊 Tracking</h3>
-    <p>Real-time updates</p>
+    <p>Real-time monitoring</p>
   </div>
 
   <div class="card">
@@ -219,16 +207,17 @@ input{
 
 </section>
 
+<!-- CTA -->
 <section class="cta">
   <h2>Start Using Kasipag Now</h2>
-  <button class="btn" onclick="openModal()">Create Account</button>
+  <button class="btn" onclick="openModal()">Sign Up</button>
 </section>
 
 <footer style="text-align:center;padding:20px;opacity:0.6;">
   © 2026 Kasipag System
 </footer>
 
-<!-- 🔥 ADD ACCOUNT MODAL -->
+<!-- 🔥 SIGNUP MODAL -->
 <div class="modal" id="modal">
 
   <div class="modal-box">
@@ -241,7 +230,16 @@ input{
     <input id="email" placeholder="Email">
     <input id="password" type="password" placeholder="Password">
 
-    <button class="btn" onclick="save()">Save</button>
+    <select id="role">
+      <option value="cashier">Cashier</option>
+      <option value="rider 1">Rider 1</option>
+      <option value="rider 2">Rider 2</option>
+      <option value="rider 3">Rider 3</option>
+    </select>
+
+    <button class="btn" onclick="signup()">Sign Up</button>
+
+    <p id="msg"></p>
 
   </div>
 
@@ -257,22 +255,30 @@ function closeModal(){
   modal.style.display="none";
 }
 
-function save(){
-
-  let user = {
-    name:name.value,
-    email:email.value,
-    password:password.value
-  };
+/* 🔥 SIGNUP WITH PENDING APPROVAL */
+function signup(){
 
   let users = JSON.parse(localStorage.getItem("users")) || [];
-  users.push(user);
 
+  let newUser = {
+    name:name.value,
+    email:email.value,
+    password:password.value,
+    role:role.value,
+    status:"pending"
+  };
+
+  users.push(newUser);
   localStorage.setItem("users", JSON.stringify(users));
 
-  alert("Account Created ✔");
+  msg.style.color="#f59e0b";
+  msg.innerHTML="⏳ Waiting for admin confirmation...";
 
-  closeModal();
+  setTimeout(()=>{
+    alert("Account submitted ✔ Please wait for approval");
+    closeModal();
+  },1500);
+
 }
 
 </script>
