@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kasipag Loans System</title>
+<title>Kasipag Admin System</title>
 
 <style>
 :root{
@@ -31,57 +31,77 @@ body{
 /* HEADER */
 .header{
   padding:15px;
-  background:rgba(2,6,23,0.9);
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  background:rgba(2,6,23,0.9);
+  backdrop-filter:blur(10px);
+}
+
+.header h2{color:var(--blue);}
+
+/* NAV */
+.nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  padding:10px;
+}
+
+.nav button{
+  padding:10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:white;
+  cursor:pointer;
+}
+
+.nav button:hover{
+  background:var(--blue);
 }
 
 /* SECTION */
-.container{
+.section{
+  display:none;
   padding:15px;
 }
 
-/* CARD */
+.active{display:block;}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+}
+
 .card{
   background:var(--card);
   border:1px solid var(--border);
   padding:15px;
   border-radius:12px;
-  margin-bottom:10px;
 }
 
-/* FORM */
-input,select{
-  padding:10px;
-  margin:5px;
-  border-radius:8px;
-  border:none;
-  background:#020617;
-  color:white;
-}
-
-button{
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  background:var(--blue);
-  color:white;
-}
-
-/* GROUP TABLE */
+/* TABLE */
 table{
   width:100%;
   margin-top:10px;
+  border-collapse:collapse;
 }
 
 th,td{
-  padding:8px;
+  padding:10px;
   border-bottom:1px solid var(--border);
 }
 
-.hidden{display:none;}
+th{
+  background:#020617;
+  color:gray;
+  font-size:12px;
+}
 
+/* STATUS */
 .status{
   padding:4px 8px;
   border-radius:8px;
@@ -89,116 +109,221 @@ th,td{
 }
 
 .pending{background:var(--yellow);}
+.collected{background:var(--blue);}
+.notcollected{background:var(--red);}
+
+/* BUTTON */
+button.action{
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.collect{background:var(--blue);}
+.notc{background:var(--red);}
+
+/* ADD LOAN */
+.form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-width:400px;
+}
+
+input,select{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  background:#020617;
+  color:white;
+}
+
+/* GROUP TABLE */
+.group-table{
+  width:100%;
+  margin-top:10px;
+}
+
+.hidden{display:none;}
+
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <h3>Kasipag Loans</h3>
+  <h2>Kasipag Admin</h2>
+  <button onclick="logout()" style="background:#ef4444;color:white;padding:8px 12px;border:none;border-radius:8px;">Logout</button>
 </div>
 
-<div class="container">
-
-<!-- LOAN TYPE -->
-<div class="card">
-  <select id="type" onchange="toggleType()">
-    <option value="solo">Solo Loan</option>
-    <option value="group">Group Loan</option>
-  </select>
+<!-- NAV -->
+<div class="nav">
+  <button onclick="show('dashboard')">Dashboard</button>
+  <button onclick="show('add')">Add Loan</button>
+  <button onclick="show('loans')">Loans</button>
+  <button onclick="show('collected')">Collected</button>
+  <button onclick="show('notcollected')">Not Collected</button>
+  <button onclick="show('pending')">Pending</button>
 </div>
 
-<!-- SOLO FORM -->
-<div class="card" id="solo">
-  <h3>Solo Loan</h3>
-  <input id="soloName" placeholder="Borrower Name">
-  <input id="soloAmount" type="number" placeholder="Amount">
-  <button onclick="addSolo()">Add Solo Loan</button>
+<!-- DASHBOARD -->
+<div id="dashboard" class="section active">
+  <div class="grid">
+    <div class="card">Total Loans <h2 id="t">0</h2></div>
+    <div class="card">Pending <h2 id="p">0</h2></div>
+    <div class="card">Collected <h2 id="c">0</h2></div>
+    <div class="card">Not Collected <h2 id="nc">0</h2></div>
+  </div>
 </div>
 
-<!-- GROUP FORM -->
-<div class="card hidden" id="group">
-  <h3>Group Loan</h3>
+<!-- ADD LOAN -->
+<div id="add" class="section">
+  <h3>Add Loan</h3>
 
+  <div class="form">
+
+    <select id="type" onchange="toggleType()">
+      <option value="solo">Solo</option>
+      <option value="group">Group</option>
+    </select>
+
+    <!-- SOLO -->
+    <div id="soloBox">
+      <input id="soloName" placeholder="Borrower Name">
+      <input id="soloAmount" placeholder="Amount">
+    </div>
+
+    <!-- GROUP -->
+    <div id="groupBox" class="hidden">
+      <input id="groupName" placeholder="Group Name">
+
+      <table class="group-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody id="groupMembers"></tbody>
+      </table>
+
+      <button onclick="addRow()">+ Add Member</button>
+    </div>
+
+    <button onclick="addLoan()" style="background:var(--green);color:white;">Submit Loan</button>
+
+  </div>
+</div>
+
+<!-- LOANS -->
+<div id="loans" class="section">
+  <h3>All Loans</h3>
   <table>
     <thead>
       <tr>
         <th>Name</th>
         <th>Amount</th>
+        <th>Type</th>
+        <th>Status</th>
       </tr>
     </thead>
-    <tbody id="groupBody"></tbody>
+    <tbody id="allLoans"></tbody>
   </table>
-
-  <button onclick="addRow()">+ Add Member</button>
-  <button onclick="addGroup()">Submit Group Loan</button>
 </div>
 
-<!-- LIST -->
-<div class="card">
-  <h3>Loans List</h3>
-  <div id="list"></div>
+<!-- COLLECTED -->
+<div id="collected" class="section">
+  <h3>Collected</h3>
+  <div id="collectedList"></div>
 </div>
 
+<!-- NOT COLLECTED -->
+<div id="notcollected" class="section">
+  <h3>Not Collected</h3>
+  <div id="notList"></div>
+</div>
+
+<!-- PENDING -->
+<div id="pending" class="section">
+  <h3>Pending</h3>
+  <div id="pendingList"></div>
 </div>
 
 <script>
 
 let loans = JSON.parse(localStorage.getItem("loans")) || [];
 
-/* SWITCH TYPE */
-function toggleType(){
-  let t = document.getElementById("type").value;
-  document.getElementById("solo").classList.toggle("hidden", t!=="solo");
-  document.getElementById("group").classList.toggle("hidden", t!=="group");
+/* NAV */
+function show(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-/* ADD ROW GROUP */
+/* TOGGLE SOLO / GROUP */
+function toggleType(){
+  let type = document.getElementById("type").value;
+  document.getElementById("soloBox").classList.toggle("hidden", type!=="solo");
+  document.getElementById("groupBox").classList.toggle("hidden", type!=="group");
+}
+
+/* ADD ROW (GROUP) */
 function addRow(){
   let row = document.createElement("tr");
   row.innerHTML = `
     <td><input placeholder="Name"></td>
-    <td><input type="number" placeholder="Amount"></td>
+    <td><input placeholder="Amount"></td>
   `;
-  document.getElementById("groupBody").appendChild(row);
+  document.getElementById("groupMembers").appendChild(row);
 }
 
-/* SOLO LOAN */
-function addSolo(){
+/* ADD LOAN */
+function addLoan(){
 
-  loans.push({
-    type:"Solo",
-    name:soloName.value,
-    amount:soloAmount.value,
-    status:"Pending"
-  });
+  let type = document.getElementById("type").value;
 
-  save();
-}
+  if(type === "solo"){
+    loans.push({
+      type:"Solo",
+      name:soloName.value,
+      amount:soloAmount.value,
+      status:"Pending"
+    });
+  }
 
-/* GROUP LOAN */
-function addGroup(){
-
-  let rows = document.querySelectorAll("#groupBody tr");
-
-  rows.forEach(r=>{
-    let name = r.children[0].children[0].value;
-    let amount = r.children[1].children[0].value;
-
-    if(name && amount){
-      loans.push({
-        type:"Group",
-        name:name,
-        amount:amount,
-        status:"Pending"
+  if(type === "group"){
+    let group = [];
+    document.querySelectorAll("#groupMembers tr").forEach(r=>{
+      group.push({
+        name:r.children[0].children[0].value,
+        amount:r.children[1].children[0].value
       });
-    }
-  });
+    });
 
+    loans.push({
+      type:"Group",
+      name:groupName.value,
+      members:group,
+      status:"Pending"
+    });
+  }
+
+  localStorage.setItem("loans",JSON.stringify(loans));
+  render();
+  alert("Loan Added ✔");
+}
+
+/* UPDATE STATUS */
+function collect(i){
+  loans[i].status="Collected";
   save();
 }
 
-/* SAVE */
+function notCollected(i){
+  loans[i].status="Not Collected";
+  save();
+}
+
 function save(){
   localStorage.setItem("loans",JSON.stringify(loans));
   render();
@@ -207,19 +332,57 @@ function save(){
 /* RENDER */
 function render(){
 
-list.innerHTML="";
+let t=0,p=0,c=0,nc=0;
 
-loans.forEach(l=>{
-  list.innerHTML+=`
-  <div class="card">
-    <b>${l.name}</b><br>
-    ₱${l.amount}<br>
-    ${l.type}<br>
-    <span class="status pending">${l.status}</span>
-  </div>
-  `;
+allLoans.innerHTML="";
+collectedList.innerHTML="";
+notList.innerHTML="";
+pendingList.innerHTML="";
+
+loans.forEach((l,i)=>{
+
+t++;
+if(l.status==="Pending") p++;
+if(l.status==="Collected") c++;
+if(l.status==="Not Collected") nc++;
+
+/* ALL */
+allLoans.innerHTML+=`
+<tr>
+<td>${l.name}</td>
+<td>${l.amount || "Group"}</td>
+<td>${l.type}</td>
+<td><span class="status ${l.status.toLowerCase().replace(" ","")}">${l.status}</span></td>
+</tr>
+`;
+
+/* COLLECTED */
+if(l.status==="Collected"){
+collectedList.innerHTML+=`<div class="card">${l.name}</div>`;
+}
+
+/* NOT */
+if(l.status==="Not Collected"){
+notList.innerHTML+=`<div class="card">${l.name}</div>`;
+}
+
+/* PENDING */
+if(l.status==="Pending"){
+pendingList.innerHTML+=`<div class="card">${l.name}</div>`;
+}
+
 });
 
+t.innerText=t;
+p.innerText=p;
+c.innerText=c;
+nc.innerText=nc;
+
+}
+
+function logout(){
+  localStorage.removeItem("role");
+  window.location.href="login.html";
 }
 
 render();
