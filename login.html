@@ -99,24 +99,30 @@ const accounts = {
 };
 
 function login(){
-  let email=email.value;
-  let password=password.value;
-  let msg=document.getElementById("msg");
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+  let msg = document.getElementById("msg");
 
-  let acc=accounts[role];
+  let acc = accounts[role];
 
-  if(acc && email===acc.email && password===acc.password){
+  if(!acc){
+    msg.style.color="#ef4444";
+    msg.innerHTML="Invalid role selected";
+    return;
+  }
+
+  if(email === acc.email && password === acc.password){
 
     msg.style.color="#22c55e";
     msg.innerHTML="Login Successful";
 
     setTimeout(()=>{
       switch(role){
-        case "admin": location="admin.html"; break;
-        case "cashier": location="cashier.html"; break;
-        case "rider 1": location="rider.html"; break;
-        case "rider 2": location="rider2.html"; break;
-        case "rider 3": location="rider3.html"; break;
+        case "admin": window.location.href="admin.html"; break;
+        case "cashier": window.location.href="cashier.html"; break;
+        case "rider 1": window.location.href="rider.html"; break;
+        case "rider 2": window.location.href="rider2.html"; break;
+        case "rider 3": window.location.href="rider3.html"; break;
       }
     },1000);
 
