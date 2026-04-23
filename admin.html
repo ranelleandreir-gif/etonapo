@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kasipag Admin Panel</title>
+<title>Kasipag Pro Admin</title>
 
 <style>
 :root{
@@ -25,12 +25,17 @@ body{
 /* HEADER */
 header{
   padding:14px;
-  background:rgba(2,6,23,.85);
+  background:rgba(2,6,23,.9);
   border-bottom:1px solid var(--border);
   display:flex;
   justify-content:space-between;
   position:sticky;
   top:0;
+}
+
+button.logout{
+  background:#ef4444;
+  color:white;
 }
 
 /* CONTAINER */
@@ -62,17 +67,12 @@ input,select{
 
 /* BUTTON */
 button{
-  padding:10px 12px;
+  padding:10px;
   border:none;
   border-radius:10px;
   background:var(--primary);
   cursor:pointer;
   font-weight:600;
-}
-
-.small{
-  padding:6px 10px;
-  font-size:12px;
   margin-top:5px;
 }
 
@@ -87,23 +87,51 @@ button{
 .Collected{background:rgba(59,130,246,.2);color:#60a5fa}
 .Verified{background:rgba(34,197,94,.2);color:#4ade80}
 
+/* GROUP BOX */
+.groupBox{
+  padding:10px;
+  border:1px dashed #334155;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted);
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <div>🔥 KASIPAG ADMIN PANEL</div>
+  <div>🔥 KASIPAG PRO ADMIN</div>
+  <button class="logout" onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
 
 <!-- ADD LOAN -->
 <div class="card">
-  <h3>Add Loan</h3>
+  <h3>Create Loan</h3>
 
-  <input id="name" placeholder="Borrower Name">
+  <select id="type" onchange="toggleGroup()">
+    <option value="solo">Solo Loan</option>
+    <option value="group">Group Loan</option>
+  </select>
+
+  <input id="name" placeholder="Name (Solo / Leader)">
+
   <input id="amount" placeholder="Amount">
+
+  <!-- GROUP SECTION -->
+  <div id="groupBox" class="groupBox" style="display:none;">
+    <h4>Group Members</h4>
+    <input id="memberName" placeholder="Member Name">
+    <button onclick="addMember()">Add Member</button>
+    <div id="members"></div>
+  </div>
 
   <select id="rider">
     <option value="rider1">Rider 1</option>
@@ -111,7 +139,7 @@ button{
     <option value="rider3">Rider 3</option>
   </select>
 
-  <button onclick="addLoan()">Add Loan</button>
+  <button onclick="addLoan()">Save Loan</button>
 </div>
 
 <!-- LIST -->
@@ -122,65 +150,77 @@ button{
 <script>
 
 let loans = JSON.parse(localStorage.getItem("loans")) || [];
+let members = [];
+
+/* TOGGLE GROUP */
+function toggleGroup(){
+  let type = document.getElementById("type").value;
+  document.getElementById("groupBox").style.display = type==="group" ? "block":"none";
+}
+
+/* ADD MEMBER */
+function addMember(){
+  let name = document.getElementById("memberName").value;
+  if(!name) return;
+
+  members.push(name);
+  renderMembers();
+  document.getElementById("memberName").value="";
+}
+
+/* SHOW MEMBERS */
+function renderMembers(){
+  let box = document.getElementById("members");
+  box.innerHTML = "";
+
+  members.forEach((m,i)=>{
+    box.innerHTML += `<div>• ${m}</div>`;
+  });
+}
 
 /* ADD LOAN */
 function addLoan(){
+  let type = document.getElementById("type").value;
   let name = document.getElementById("name").value;
   let amount = document.getElementById("amount").value;
   let rider = document.getElementById("rider").value;
 
-  if(!name || !amount){
-    return alert("Fill all fields");
-  }
+  if(!name || !amount) return alert("Fill required fields");
 
-  loans.push({
+  let loan = {
+    id: Date.now(),
+    type: type,
     leader: name,
     amount: Number(amount),
-    rider: rider.toLowerCase(),
-    status: "Pending"
-  });
+    rider: rider,
+    status: "Pending",
+    members: type==="group" ? members : []
+  };
+
+  loans.push(loan);
+
+  localStorage.setItem("loans", JSON.stringify(loans));
+
+  members = [];
+  renderMembers();
+  render();
+}
+
+/* STATUS FLOW */
+function nextStatus(i){
+  let status = loans[i].status;
+
+  if(status==="Pending") loans[i].status="Collected";
+  else if(status==="Collected") loans[i].status="Verified";
+  else loans[i].status="Verified";
 
   localStorage.setItem("loans", JSON.stringify(loans));
   render();
 }
 
-/* CHANGE RIDER */
-function changeRider(i){
-  let r = prompt("Enter rider1 / rider2 / rider3");
-
-  if(r){
-    r = r.toLowerCase().trim();
-
-    if(!["rider1","rider2","rider3"].includes(r)){
-      return alert("Invalid rider!");
-    }
-
-    loans[i].rider = r;
-    localStorage.setItem("loans", JSON.stringify(loans));
-    render();
-  }
-}
-
-/* CHANGE STATUS */
-function changeStatus(i){
-  let s = prompt("Pending / Collected / Verified");
-
-  if(s){
-    s = s.trim();
-
-    if(!["Pending","Collected","Verified"].includes(s)){
-      return alert("Invalid status!");
-    }
-
-    loans[i].status = s;
-    localStorage.setItem("loans", JSON.stringify(loans));
-    render();
-  }
-}
-
-/* DELETE (OPTIONAL EXTRA FOR DEFENSE) */
+/* DELETE */
 function deleteLoan(i){
-  if(confirm("Delete this loan?")){
+  if(confirm("Delete?")){
     loans.splice(i,1);
     localStorage.setItem("loans", JSON.stringify(loans));
     render();
@@ -190,22 +230,28 @@ function deleteLoan(i){
 /* RENDER */
 function render(){
   let list = document.getElementById("list");
-  list.innerHTML = "";
+  list.innerHTML="";
 
   loans.forEach((l,i)=>{
 
     list.innerHTML += `
     <div class="card">
-      <b>${l.leader}</b><br>
-      ₱${l.amount}<br>
+      <b>${l.type.toUpperCase()} LOAN</b><br><br>
+
+      👤 ${l.leader}<br>
+
+      ${l.type==="group"
+        ? `<div class="small">Group Members:<br>${l.members.map(m=>"• "+m).join("<br>")}</div>`
+        : ""}
+
+      <br>💰 ₱${l.amount}<br>
 
       <span class="status ${l.status}">${l.status}</span><br>
 
-      <small>Assigned: ${l.rider}</small><br><br>
+      🚴 Assigned: ${l.rider}<br><br>
 
-      <button class="small" onclick="changeRider(${i})">Change Rider</button>
-      <button class="small" onclick="changeStatus(${i})">Change Status</button>
-      <button class="small" onclick="deleteLoan(${i})" style="background:#ef4444;color:white;">Delete</button>
+      <button onclick="nextStatus(${i})">Next Status</button>
+      <button onclick="deleteLoan(${i})" style="background:#ef4444;color:white;">Delete</button>
     </div>
     `;
   });
@@ -213,8 +259,14 @@ function render(){
   localStorage.setItem("loans", JSON.stringify(loans));
 }
 
-/* REALTIME SYNC */
+/* REALTIME */
 window.addEventListener("storage", render);
+
+/* LOGOUT */
+function logout(){
+  localStorage.removeItem("role");
+  window.location.href="index.html";
+}
 
 /* INIT */
 render();
