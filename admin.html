@@ -144,7 +144,7 @@ function addLoan(){
 
 /* CHANGE RIDER */
 function changeRider(i){
-  let r = prompt("Enter rider1 / rider2 / rider3");
+  let r = prompt("Enter rider / rider2 / rider3");
   if(r){
     loans[i].rider = r;
     localStorage.setItem("loans", JSON.stringify(loans));
