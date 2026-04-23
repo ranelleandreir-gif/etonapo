@@ -7,6 +7,11 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
 
+
+<div class="logo">
+  <img src="etonatalaga.png" alt="Kasipag Logo">
+</div>
+
 body{
   height:100vh;
   display:flex;
@@ -57,10 +62,30 @@ button{
   font-weight:bold;
   cursor:pointer;
   transition:.3s;
+  position:relative;
 }
 
 button:hover{
   background:#0891b2;
+}
+
+button:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+
+.spinner{
+  width:20px;
+  height:20px;
+  border:3px solid white;
+  border-top:3px solid transparent;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:auto;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
 }
 
 #msg{
@@ -80,7 +105,7 @@ button:hover{
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
 
-  <button onclick="login()">Login</button>
+  <button id="loginBtn" onclick="login()">Login</button>
 
   <p id="msg"></p>
 
@@ -102,6 +127,7 @@ function login(){
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
   let msg = document.getElementById("msg");
+  let btn = document.getElementById("loginBtn");
 
   let acc = accounts[role];
 
@@ -111,25 +137,57 @@ function login(){
     return;
   }
 
-  if(email === acc.email && password === acc.password){
+  // 🔥 START LOADING
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+  msg.innerHTML = "Logging in...";
 
-    msg.style.color="#22c55e";
-    msg.innerHTML="Login Successful";
+  setTimeout(()=>{
 
-    setTimeout(()=>{
-      switch(role){
-        case "admin": window.location.href="admin.html"; break;
-        case "cashier": window.location.href="cashier.html"; break;
-        case "rider 1": window.location.href="rider.html"; break;
-        case "rider 2": window.location.href="rider2.html"; break;
-        case "rider 3": window.location.href="rider3.html"; break;
-      }
-    },1000);
+    if(email === acc.email && password === acc.password){
 
-  } else {
-    msg.style.color="#ef4444";
-    msg.innerHTML="Invalid credentials";
-  }
+      msg.style.color="#22c55e";
+      msg.innerHTML="Login Successful";
+
+      setTimeout(()=>{
+
+        switch(role){
+          case "admin":
+            window.location.href="admin.html";
+            break;
+
+          case "cashier":
+            window.location.href="cashier.html";
+            break;
+
+          case "rider 1":
+            window.location.href="rider.html";
+            break;
+
+          case "rider 2":
+            window.location.href="rider2.html";
+            break;
+
+          case "rider 3":
+            window.location.href="rider3.html";
+            break;
+
+          default:
+            window.location.href="index.html";
+        }
+
+      },1000);
+
+    } else {
+      msg.style.color="#ef4444";
+      msg.innerHTML="Invalid credentials";
+
+      // ❌ STOP LOADING
+      btn.disabled = false;
+      btn.innerHTML = "Login";
+    }
+
+  },1500); // loading delay
 }
 </script>
 
